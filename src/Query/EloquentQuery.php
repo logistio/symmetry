@@ -2,7 +2,7 @@
 
 namespace Logistio\Symmetry\Query;
 
-use App\Exceptions\ValidationException;
+use Logistio\Symmetry\Exception\ValidationException;
 use Illuminate\Database\Eloquent\Collection;
 use Logistio\Symmetry\Query\Filter\Filter;
 use Logistio\Symmetry\Query\Macro\ColumnCode\ApiColumnCodeTag;

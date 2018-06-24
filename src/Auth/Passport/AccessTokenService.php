@@ -4,7 +4,7 @@
 namespace Logistio\Symmetry\Auth\Passport;
 
 
-use App\Exceptions\InvalidCredentialsException;
+use Logistio\Symmetry\Exception\Auth\InvalidCredentialsException;
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\ClientException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;

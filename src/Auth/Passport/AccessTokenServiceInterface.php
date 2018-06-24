@@ -4,7 +4,7 @@
 namespace Logistio\Symmetry\Auth\Passport;
 
 
-use App\Exceptions\InvalidCredentialsException;
+use Logistio\Symmetry\Exception\Auth\InvalidCredentialsException;
 
 interface AccessTokenServiceInterface
 {
