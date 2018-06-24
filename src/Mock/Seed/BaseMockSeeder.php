@@ -91,4 +91,29 @@ abstract class BaseMockSeeder
         return $selection[$index];
     }
 
+    /**
+     *
+     * @param array $intervalConfig - Configuration which specifies that a certain key
+     * must have a certain value when the current index matches the interval. This
+     * is used when seeding multiple objects and you would like to alternate
+     * between values at some interval. For example you may wish to seed
+     * 10 bookings where every 5th booking will have a status of cancelled
+     * and the rest will have a status of completed.
+     *
+     * @param $seedOptions
+     * @param $currentIndex
+     * @return mixed
+     */
+    protected function setSeedOptionValueFromIntervalConfig(array $seedOptions, array $intervalConfig, $currentIndex)
+    {
+        $key = $intervalConfig['key'];
+        $atIndexInterval = $intervalConfig['at_index_interval'];
+        $atIndexValue = $intervalConfig['at_index_value'];
+        $defaultValue = $intervalConfig['default_value'];
+
+        $seedOptions[$key] = ($currentIndex % $atIndexInterval == 0) ? $atIndexValue : $defaultValue;
+
+        return $seedOptions;
+    }
+
 }

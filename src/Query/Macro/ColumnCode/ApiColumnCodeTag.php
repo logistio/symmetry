@@ -23,6 +23,8 @@ class ApiColumnCodeTag
 
     private $databaseColumn;
 
+    private $timeAggregateScope;
+
     /**
      * @param $config
      * @return Collection
@@ -41,10 +43,30 @@ class ApiColumnCodeTag
 
             $tag->setType($type);
 
+            $timeAggregateScope = array_get($apiColumnCodeConfig, 'time_aggregate_scope', null);
+
+            $tag->setTimeAggregateScope($timeAggregateScope);
+
             $collection->push($tag);
         }
 
         return $collection;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTimeAggregateScope()
+    {
+        return $this->timeAggregateScope;
+    }
+
+    /**
+     * @param mixed $timeAggregateScope
+     */
+    public function setTimeAggregateScope($timeAggregateScope): void
+    {
+        $this->timeAggregateScope = $timeAggregateScope;
     }
 
     /**

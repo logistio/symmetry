@@ -59,12 +59,30 @@ trait BaseModelTrait
     }
 
     /**
+     * @param BaseModel $model
+     * @param array $modelArray
+     * @return array
+     */
+    private function attachMissingPubid(array $modelArray)
+    {
+        $pubid = array_get($modelArray, 'pubid', null);
+
+        if (is_null($pubid)) {
+            $modelArray['pubid'] = \PublicId::encode($this->id);
+        }
+
+        return $modelArray;
+    }
+
+    /**
      * @param null $options
      * @return array
      */
     public function toArray($options = null)
     {
         $array = parent::toArray();
+
+        $array = $this->attachMissingPubid($array);
 
         if (is_null($options)) {
             return $array;

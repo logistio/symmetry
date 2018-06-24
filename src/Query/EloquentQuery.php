@@ -3,6 +3,7 @@
 namespace Logistio\Symmetry\Query;
 
 use App\Exceptions\ValidationException;
+use Illuminate\Database\Eloquent\Collection;
 use Logistio\Symmetry\Query\Filter\Filter;
 use Logistio\Symmetry\Query\Macro\ColumnCode\ApiColumnCodeTag;
 use Illuminate\Database\Eloquent\Builder;
@@ -47,11 +48,16 @@ abstract class EloquentQuery extends Query
 
     /**
      * @param \Closure|null $overrideCallback
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * @param bool $fetchAll
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|Collection
      */
-    public function execute(\Closure $overrideCallback = null)
+    public function execute(\Closure $overrideCallback = null, $fetchAll = false)
     {
         $this->buildQuery($overrideCallback);
+
+        if ($fetchAll == true) {
+            return $this->queryBuilder->get();
+        }
 
         return $this->queryBuilder->paginate(
             $this->queryRequest->getPageLength()

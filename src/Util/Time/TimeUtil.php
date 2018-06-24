@@ -160,5 +160,15 @@ class TimeUtil
         return self::paramDateTimeToCarbon($timestamp);
     }
 
+    /**
+     * @param Carbon $start
+     * @param Carbon $end
+     * @return bool
+     */
+    public static function areSequential(Carbon $start, Carbon $end)
+    {
+        return $start->lte($end);
+    }
+
 
 }

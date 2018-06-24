@@ -230,12 +230,10 @@ class QueryRequestDecorator
 
             $pageLength  = $input['page_length'];
 
-            /*
-             * The length must be an integer
-             */
-
-            if (!is_int($pageLength)) {
-                throw new ValidationException("The `page_length` parameter must be an integer.");
+            if ($pageLength != 'ALL') {
+                if (!is_int($pageLength)) {
+                    throw new ValidationException("The `page_length` parameter must be an integer.");
+                }
             }
         }
 

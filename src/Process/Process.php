@@ -118,10 +118,12 @@ class Process extends BaseModel
 
     /**
      * @param $payload
+     * @return $this
      */
     public function setPayload($payload)
     {
         $this->payload = json_encode($this->createPayloadArray($payload));
+        return $this;
     }
 
     /**
@@ -170,15 +172,21 @@ class Process extends BaseModel
     /**
      * @param $externalId
      * @param int $countQuery
+     * @param null $type
      * @return bool
      */
-    public static function isProcessRunningForExternalId($externalId, $countQuery = 0)
+    public static function isProcessRunningForExternalId($externalId, $countQuery = 0, $type = null)
     {
         $states = ProcessState::getInProgressAndPendingStates();
 
-        $processes = static::where('external_id', $externalId)
-            ->whereIn('process_state_id', $states->pluck('id')->toArray())
-            ->get();
+        $query = static::where('external_id', $externalId)
+            ->whereIn('process_state_id', $states->pluck('id')->toArray());
+
+        if ($type) {
+            $query->whereType($type);
+        }
+
+        $processes = $query->get();
 
         return $processes->count() > $countQuery;
     }
