@@ -26,5 +26,15 @@
         "psr-4": {
             "Logistio\\Symmetry\\Test\\": "tests"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Logistio\\Symmetry\\SymmetryServiceProvider"
+            ],
+            "aliases": {
+                "PublicId": "Logistio\\Symmetry\\PublicId\\PublicId"
+            }
+        }
     }
 }
