@@ -15,7 +15,7 @@ class SymmetryServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-
+        $this->publishConfigurationFiles();
     }
 
     public function register()
@@ -33,5 +33,19 @@ class SymmetryServiceProvider extends ServiceProvider
         \App::register(DotEnvValidatorServiceProvider::class);
 
         \App::register(SlackServiceProvider::class);
+    }
+
+    /**
+     *
+     */
+    private function publishConfigurationFiles()
+    {
+        $configFilesPath = __DIR__ . '/Resources/config';
+
+        $appSymmetryFolder = 'symmetry';
+
+        $this->publishes([
+            $configFilesPath . '/pubid_tables.php' => config_path($appSymmetryFolder . '/pubid_tables.php'),
+        ]);
     }
 }
