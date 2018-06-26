@@ -20,6 +20,8 @@ class SymmetryServiceProvider extends ServiceProvider
 
     public function register()
     {
+        ///
+        ///
         $this->app->singleton(Application::class, function() {
             return new Application();
         });

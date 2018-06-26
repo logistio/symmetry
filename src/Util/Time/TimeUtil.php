@@ -170,5 +170,21 @@ class TimeUtil
         return $start->lte($end);
     }
 
+    /**
+     * @param Carbon $dt
+     * @return string
+     */
+    public static function fromCarbonToIntegerDate(Carbon $dt)
+    {
+        return $dt->format('Ymd');
+    }
 
+    /**
+     * @param Carbon $dt
+     * @return string
+     */
+    public static function fromCarbonToIntegerTime(Carbon $dt)
+    {
+        return $dt->format('His');
+    }
 }
