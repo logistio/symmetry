@@ -54,6 +54,14 @@ abstract class BaseTimeScopeAggregator
     }
 
     /**
+     * @return string
+     */
+    public function getScope()
+    {
+        return $this->scope;
+    }
+
+    /**
      * @return array
      */
     public function getScopes()
@@ -223,9 +231,7 @@ abstract class BaseTimeScopeAggregator
     {
         return "
             {$this->getExtractYearFromColumnSql($dateColumn)},
-            {$this->getExtractQuarterFromColumnSql($dateColumn)},
-            {$this->getExtractMonthNumberFromColumnSql($dateColumn)},
-            {$this->getExtractMonthNameFromColumnSql($dateColumn)},
+            -- {$this->getExtractQuarterFromColumnSql($dateColumn)},
             {$this->getExtractWeekNumberFromColumnSql($dateColumn)}
         ";
     }
@@ -310,9 +316,6 @@ abstract class BaseTimeScopeAggregator
             case static::SCOPE_WEEK: {
                 return "
                     {$this->getExtractYearFromColumnSql($column)} AS {$yearAlias},
-                    {$this->getExtractQuarterFromColumnSql($column)} AS {$quarterAlias},
-                    {$this->getExtractMonthNumberFromColumnSql($column)} AS {$monthNumberAlias},
-                    TRIM({$this->getExtractMonthNameFromColumnSql($column)}) AS {$monthNameAlias},
                     {$this->getExtractWeekNumberFromColumnSql($column)} AS {$weekNumberAlias}
                 ";
             }
@@ -372,8 +375,6 @@ abstract class BaseTimeScopeAggregator
             case static::SCOPE_WEEK: {
                 return "
                     {$this->getExtractWeekNumberFromColumnSql($column)},
-                    {$this->getExtractMonthNumberFromColumnSql($column)},
-                    {$this->getExtractQuarterFromColumnSql($column)},
                     {$this->getExtractYearFromColumnSql($column)}
                 ";
             }
