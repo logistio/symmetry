@@ -5,6 +5,7 @@ namespace Logistio\Symmetry;
 
 
 use Illuminate\Support\ServiceProvider;
+use Logistio\Symmetry\Console\ConsoleServiceProvider;
 use Logistio\Symmetry\Provider\Slack\SlackServiceProvider;
 use Logistio\Symmetry\PublicId\PublicIdConverter;
 use Logistio\Symmetry\PublicId\PublicIdManager;
@@ -18,8 +19,13 @@ class SymmetryServiceProvider extends ServiceProvider
         $this->publishConfigurationFiles();
     }
 
+    /**
+     *
+     */
     public function register()
     {
+        $this->registerProviders();
+
         $this->app->singleton(Application::class, function() {
             return new Application();
         });
@@ -30,9 +36,15 @@ class SymmetryServiceProvider extends ServiceProvider
             return new PublicIdConverter($hashIds);
         });
 
+    }
+
+    private function registerProviders()
+    {
         \App::register(DotEnvValidatorServiceProvider::class);
 
         \App::register(SlackServiceProvider::class);
+
+        \App::register(ConsoleServiceProvider::class);
     }
 
     /**
