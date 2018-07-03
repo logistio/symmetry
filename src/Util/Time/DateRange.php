@@ -3,8 +3,9 @@
 namespace Logistio\Symmetry\Util\Time;
 
 use Carbon\Carbon;
+use Illuminate\Contracts\Support\Arrayable;
 
-class DateRange
+class DateRange implements Arrayable
 {
     /**
      * @var Carbon
@@ -41,5 +42,16 @@ class DateRange
     public function getDateTo(): Carbon
     {
         return $this->dateTo;
+    }
+
+    /**
+     * @return array
+     */
+    public function toArray()
+    {
+        return [
+            'date_from' => $this->dateFrom,
+            'date_to' => $this->dateTo
+        ];
     }
 }
