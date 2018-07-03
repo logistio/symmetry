@@ -50,8 +50,8 @@ class DateRange implements Arrayable
     public function toArray()
     {
         return [
-            'date_from' => $this->dateFrom,
-            'date_to' => $this->dateTo
+            'date_from' => $this->dateFrom->toDateString(),
+            'date_to' => $this->dateTo->toDateString()
         ];
     }
 }
