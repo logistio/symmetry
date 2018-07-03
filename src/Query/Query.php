@@ -56,6 +56,13 @@ abstract class Query
         $this->apiColumnCodeTagsIdx = $queryRequest->getApiColumnCodeTagsIdx();
     }
 
+    /**
+     * @return QueryRequestInterface
+     */
+    public function getQueryRequest(): QueryRequestInterface
+    {
+        return $this->queryRequest;
+    }
 
     /**
      * @param $searchableColumn
