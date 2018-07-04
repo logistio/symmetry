@@ -100,6 +100,25 @@ class TimeUtil
     }
 
     /**
+     * @param $dbIntegerDate
+     * @return false|static
+     */
+    public static function dbIntegerDateToCarbonDate($dbIntegerDate)
+    {
+        return Carbon::createFromFormat('Ymd', $dbIntegerDate, self::getDBTimezone())
+            ->setTime(0, 0, 0);
+    }
+
+    /**
+     * @param $dbIntegerDateTime
+     * @return static
+     */
+    public static function dbIntegerDateTimeToCarbon($dbIntegerDateTime)
+    {
+        return Carbon::createFromFormat('Ymd His', $dbIntegerDateTime, self::getDBTimezone());
+    }
+
+    /**
      * @param $dbDateTimeString
      * @return Carbon
      *      UTC Carbon representation of the given date-time.
