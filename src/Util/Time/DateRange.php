@@ -99,8 +99,6 @@ class DateRange implements Arrayable
 
         $cursor = $this->dateFrom->copy();
 
-        $this->incrementBy($cursor, $period);
-
         while ($cursor->lte($this->dateTo)) {
             $dates[] = $cursor->copy();
 

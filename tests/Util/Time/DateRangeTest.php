@@ -22,7 +22,7 @@ class DateRangeTest extends TestCase
 
         $yearDates = $dateRange->getYearDatesBetween();
 
-        $this->assertEquals(1, count($yearDates));
+        $this->assertEquals(2, count($yearDates));
 
         $dateRange = new DateRange(
             TimeUtil::now()->subWeek(51),
@@ -31,7 +31,7 @@ class DateRangeTest extends TestCase
 
         $yearDates = $dateRange->getYearDatesBetween();
 
-        $this->assertEquals(0, count($yearDates));
+        $this->assertEquals(1, count($yearDates));
 
         // MONTHS
         $dateRange = new DateRange(
@@ -41,7 +41,7 @@ class DateRangeTest extends TestCase
 
         $monthDates = $dateRange->getMonthDatesBetween();
 
-        $this->assertEquals(5, count($monthDates));
+        $this->assertEquals(6, count($monthDates));
 
         $dateRange = new DateRange(
             TimeUtil::now()->subWeek(3),
@@ -50,7 +50,7 @@ class DateRangeTest extends TestCase
 
         $monthDates = $dateRange->getMonthDatesBetween();
 
-        $this->assertEquals(0, count($monthDates));
+        $this->assertEquals(1, count($monthDates));
 
         // WEEKS
         $dateRange = new DateRange(
@@ -60,7 +60,7 @@ class DateRangeTest extends TestCase
 
         $weekDates = $dateRange->getWeekDatesBetween();
 
-        $this->assertEquals(13, count($weekDates));
+        $this->assertEquals(14, count($weekDates));
 
         $dateRange = new DateRange(
             TimeUtil::now()->subDay(6),
@@ -69,7 +69,7 @@ class DateRangeTest extends TestCase
 
         $weekDates = $dateRange->getWeekDatesBetween();
 
-        $this->assertEquals(0, count($weekDates));
+        $this->assertEquals(1, count($weekDates));
 
         // DAYS
 
@@ -80,7 +80,7 @@ class DateRangeTest extends TestCase
 
         $dates = $dateRange->getDatesBetween();
 
-        $this->assertEquals(45, count($dates));
+        $this->assertEquals(46, count($dates));
 
         $dateRange = new DateRange(
             TimeUtil::now()->subHour(6),
@@ -89,7 +89,7 @@ class DateRangeTest extends TestCase
 
         $dates = $dateRange->getDatesBetween();
 
-        $this->assertEquals(0, count($dates));
+        $this->assertEquals(1, count($dates));
     }
 
 }
