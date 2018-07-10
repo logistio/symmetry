@@ -206,4 +206,24 @@ class TimeUtil
     {
         return $dt->format('His');
     }
+
+
+    public static function getYearsBetweenDateRange(DateRange $dateRange)
+    {
+        $dates = [];
+
+        $dateFrom = $dateRange->getDateFrom();
+
+        $dateTo = $dateRange->getDateTo();
+
+        $cursor = $dateFrom->copy();
+
+        $cursor->addYear();
+
+        while($cursor->lte($dateTo)) {
+            $dates[] = $cursor->copy();
+        }
+
+        return $dates;
+    }
 }

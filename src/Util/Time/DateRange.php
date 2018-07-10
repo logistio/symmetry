@@ -7,6 +7,11 @@ use Illuminate\Contracts\Support\Arrayable;
 
 class DateRange implements Arrayable
 {
+    private static $PERIOD_YEARS = 'YEARS';
+    private static $PERIOD_MONTHS = 'MONTHS';
+    private static $PERIOD_WEEKS = 'WEEKS';
+    private static $PERIOD_DAYS = 'DAYS';
+
     /**
      * @var Carbon
      */
@@ -53,5 +58,77 @@ class DateRange implements Arrayable
             'date_from' => $this->dateFrom->toDateString(),
             'date_to' => $this->dateTo->toDateString()
         ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getYearDatesBetween()
+    {
+        return $this->getTimePeriodBetween(static::$PERIOD_YEARS);
+    }
+
+    public function getMonthDatesBetween()
+    {
+        return $this->getTimePeriodBetween(static::$PERIOD_MONTHS);
+    }
+
+    /**
+     * @return array
+     */
+    public function getWeekDatesBetween()
+    {
+        return $this->getTimePeriodBetween(static::$PERIOD_WEEKS);
+    }
+
+    /**
+     * @return array
+     */
+    public function getDatesBetween()
+    {
+        return $this->getTimePeriodBetween(static::$PERIOD_DAYS);
+    }
+
+    /**
+     * @param $period
+     * @return array
+     */
+    private function getTimePeriodBetween($period)
+    {
+        $dates = [];
+
+        $cursor = $this->dateFrom->copy();
+
+        $this->incrementBy($cursor, $period);
+
+        while ($cursor->lte($this->dateTo)) {
+            $dates[] = $cursor->copy();
+
+            $this->incrementBy($cursor, $period);
+        }
+
+        return $dates;
+    }
+
+    private function incrementBy(Carbon $carbonToIncrement, $period)
+    {
+        switch ($period) {
+            case static::$PERIOD_YEARS: {
+                $carbonToIncrement->addYear();
+                break;
+            }
+            case static::$PERIOD_MONTHS: {
+                $carbonToIncrement->addMonth();
+                break;
+            }
+            case static::$PERIOD_WEEKS: {
+                $carbonToIncrement->addWeek();
+                break;
+            }
+            case static::$PERIOD_DAYS: {
+                $carbonToIncrement->addDay();
+                break;
+            }
+        }
     }
 }
