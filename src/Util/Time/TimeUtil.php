@@ -204,9 +204,8 @@ class TimeUtil
      */
     public static function fromCarbonToIntegerTime(Carbon $dt)
     {
-        return $dt->format('His');
+        return intval($dt->format('His'));
     }
-
 
     public static function getYearsBetweenDateRange(DateRange $dateRange)
     {
