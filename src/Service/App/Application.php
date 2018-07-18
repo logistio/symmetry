@@ -11,6 +11,18 @@ class Application
     const LOCAL_ENVIRONMENT = 'local';
     const TESTING_ENVIRONMENT = 'testing';
 
+    public $sigtermTriggered = false;
+
+    /**
+     * Application constructor.
+     */
+    public function __construct()
+    {
+        if ($this->supportsAsyncSignals()) {
+            $this->registerSigtermHandler();
+        }
+    }
+
     /**
      * @return bool
      */
@@ -72,5 +84,23 @@ class Application
         if (! in_array($env, $validEnvs) ) {
             throw new \Exception("The .env variable APP_ENV is invalid. Accepted values are: " . implode(",", $validEnvs) . " but received `{$env}`.");
         }
+    }
+
+    /**
+     * Determine if "async" signals are supported.
+     *
+     * @return bool
+     */
+    public function supportsAsyncSignals()
+    {
+        return version_compare(PHP_VERSION, '7.1.0') >= 0 &&
+            extension_loaded('pcntl');
+    }
+
+    private function registerSigtermHandler()
+    {
+        pcntl_signal(SIGTERM, function($sig) {
+            $this->sigtermTriggered = true;
+        });
     }
 }
