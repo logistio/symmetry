@@ -19,6 +19,9 @@ class Application
     public function __construct()
     {
         if ($this->supportsAsyncSignals()) {
+
+            pcntl_async_signals(true);
+
             $this->registerSigtermHandler();
         }
     }
