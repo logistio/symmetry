@@ -6,6 +6,7 @@ use Logistio\Symmetry\Exception\ValidationException;
 
 abstract class BaseTimeScopeAggregator
 {
+    const SCOPE_HOUR = 'HOUR';
     const SCOPE_DAY = 'DAY';
     const SCOPE_WEEK = 'WEEK';
     const SCOPE_MONTH = 'MONTH';
@@ -26,6 +27,7 @@ abstract class BaseTimeScopeAggregator
      * @var array
      */
     protected $scopeOrderByRank = [
+        self::SCOPE_HOUR,
         self::SCOPE_DAY,
         self::SCOPE_WEEK,
         self::SCOPE_MONTH,
@@ -66,7 +68,16 @@ abstract class BaseTimeScopeAggregator
      */
     public function getScopes()
     {
+        return static::getSupportedScopes();
+    }
+
+    /**
+     * @return array
+     */
+    public static function getSupportedScopes()
+    {
         return [
+            static::SCOPE_HOUR,
             static::SCOPE_DAY,
             static::SCOPE_WEEK,
             static::SCOPE_MONTH,
