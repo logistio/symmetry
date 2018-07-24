@@ -125,6 +125,7 @@ abstract class EloquentQuery extends Query
             $queryBuilder->orderByRaw("{$columnOrder->getColumnName()} {$columnOrder->getDirection()} NULLS LAST");
 
         }
+
     }
 
     protected function setFilters($queryBuilder)
