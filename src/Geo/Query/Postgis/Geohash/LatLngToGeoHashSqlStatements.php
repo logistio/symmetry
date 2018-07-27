@@ -75,7 +75,7 @@ trait LatLngToGeoHashSqlStatements
     private function selectGeoHashLatitudeCenterFromLatLngColumns($latitudeColumn, $longitudeColumn, $precision = 12, $srid = 4326)
     {
         $sql = "
-            ST_X(
+            ST_Y(
                 {$this->selectGeoHashCentroidFromLatLngColumns($latitudeColumn, $longitudeColumn, $precision, $srid)}
             )    
         ";
@@ -96,7 +96,7 @@ trait LatLngToGeoHashSqlStatements
     private function selectGeoHashLongitudeCenterFromLatLngColumns($latitudeColumn, $longitudeColumn, $precision = 12, $srid = 4326)
     {
         $sql = "
-            ST_Y(
+            ST_X(
                 {$this->selectGeoHashCentroidFromLatLngColumns($latitudeColumn, $longitudeColumn, $precision, $srid)}
             )    
         ";
