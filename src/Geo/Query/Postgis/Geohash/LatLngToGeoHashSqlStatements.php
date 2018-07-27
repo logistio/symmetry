@@ -34,6 +34,29 @@ trait LatLngToGeoHashSqlStatements
     }
 
     /**
+     * This SQL select snippet takes a latitude column, a longitude column, produces a GeoHash with the given
+     * $precision and extracts the GeoHash's polygon centroid.
+     *
+     * @param $latitudeColumn
+     * @param $longitudeColumn
+     * @param int $precision
+     * @param int $srid
+     * @return string
+     */
+    private function selectGeoHashCentroidFromLatLngColumns($latitudeColumn, $longitudeColumn, $precision = 12, $srid = 4326)
+    {
+        $latLngColumnToGeoHashSql = $this->selectLatLngColumnsToGeoHash($latitudeColumn, $longitudeColumn, $precision, $srid);
+
+        $sql = "
+            ST_Centroid(
+                ST_GeomFromGeoHash($latLngColumnToGeoHashSql, $precision)
+            )    
+        ";
+
+        return trim($sql);
+    }
+
+    /**
      * The following SQL select snippet allows the client to convert a latitude column and a longitude column to a GeoHash with the given $precision,
      * after which the latitude of the CENTER of the GeoHash polygon is extracted. This SQL select snippet
      * (along with it's sibling method to get the latitude) is useful for grouping many lat/lng columns
@@ -51,13 +74,9 @@ trait LatLngToGeoHashSqlStatements
      */
     private function selectGeoHashLatitudeCenterFromLatLngColumns($latitudeColumn, $longitudeColumn, $precision = 12, $srid = 4326)
     {
-        $latLngColumnToGeohashSql = $this->selectLatLngColumnsToGeoHash($latitudeColumn, $longitudeColumn, $precision, $srid);
-
         $sql = "
             ST_X(
-                ST_Centroid(
-                    ST_GeomFromGeoHash($latLngColumnToGeohashSql, $precision)
-                )
+                {$this->selectGeoHashCentroidFromLatLngColumns($latitudeColumn, $longitudeColumn, $precision, $srid)}
             )    
         ";
 
@@ -76,13 +95,9 @@ trait LatLngToGeoHashSqlStatements
      */
     private function selectGeoHashLongitudeCenterFromLatLngColumns($latitudeColumn, $longitudeColumn, $precision = 12, $srid = 4326)
     {
-        $latLngColumnToGeohashSql = $this->selectLatLngColumnsToGeoHash($latitudeColumn, $longitudeColumn, $precision, $srid);
-
         $sql = "
             ST_Y(
-                ST_Centroid(
-                    ST_GeomFromGeoHash($latLngColumnToGeohashSql, $precision)
-                )
+                {$this->selectGeoHashCentroidFromLatLngColumns($latitudeColumn, $longitudeColumn, $precision, $srid)}
             )    
         ";
 
