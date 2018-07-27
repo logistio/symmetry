@@ -49,7 +49,7 @@ trait LatLngToGeoHashSqlStatements
      * @param int $srid
      * @return string
      */
-    private function selectGeohHashLatitudeCenterFromLatLngColumns($latitudeColumn, $longitudeColumn, $precision = 12, $srid = 4326)
+    private function selectGeoHashLatitudeCenterFromLatLngColumns($latitudeColumn, $longitudeColumn, $precision = 12, $srid = 4326)
     {
         $latLngColumnToGeohashSql = $this->selectLatLngColumnsToGeoHash($latitudeColumn, $longitudeColumn, $precision, $srid);
 
