@@ -276,6 +276,37 @@ class QueryRequestDecorator
     }
 
     /**
+     * Set the explicit date range to the
+     * query request from the input.
+     *
+     * @param QueryRequestInterface $queryRequest
+     * @throws ValidationException
+     */
+    protected function setDateRange(QueryRequestInterface $queryRequest)
+    {
+        $input = $this->input;
+
+        $dateFromInput = array_get($input, 'date_from', null);
+        $dateToInput = array_get($input, 'date_to', null);
+
+        if (is_null($dateFromInput) || is_null($dateToInput)) {
+            $dateFrom = TimeUtil::today();
+            $dateTo = TimeUtil::today();
+        } else {
+            $dateFrom = TimeUtil::paramDateToCarbon($dateFromInput);
+            $dateTo = TimeUtil::paramDateToCarbon($dateToInput);
+        }
+
+        if (!TimeUtil::areSequential($dateFrom, $dateTo)) {
+            throw new ValidationException("The `date_from` must be equal to or before the `date_to`.");
+        }
+
+        $queryRequest->setDateFrom($dateFrom);
+
+        $queryRequest->setDateTo($dateTo);
+    }
+
+    /**
      * @param array $filter
      * @param $queryRequest
      * @param $index

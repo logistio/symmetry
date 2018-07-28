@@ -56,11 +56,45 @@ class QueryRequest implements QueryRequestInterface
     protected $apiColumnCodeTagsIdx;
 
     /**
+     * Although the client may choose to filter the results based on a date
+     * using the query request "filters" (if they are supported), the client
+     * must explicitly specify a date range if they wish to aggregate
+     * and group the results by a certain scope other than "ALL".
+     *
+     */
+
+    /**
+     * @var Carbon
+     */
+    protected $dateFrom;
+
+    /**
+     * @var Carbon
+     */
+    protected $dateTo;
+
+    /**
+     * @return Carbon
+     */
+    public function getDateFrom()
+    {
+        return $this->dateFrom;
+    }
+
+    /**
      * @return Carbon
      */
     public function getDateTo(): Carbon
     {
         return $this->dateTo;
+    }
+
+    /**
+     * @param Carbon $dateFrom
+     */
+    public function setDateFrom(Carbon $dateFrom)
+    {
+        $this->dateFrom = $dateFrom;
     }
 
     /**
