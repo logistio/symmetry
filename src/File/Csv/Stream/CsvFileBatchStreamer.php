@@ -156,7 +156,7 @@ class CsvFileBatchStreamer
             throw new EmptyFileException("The file is empty.");
         }
 
-        $this->fileHeader = $this->csvStringParser->parseString($line)[0];
+        $this->fileHeader = $this->csvStringParser->parse($line)[0];
 
         $this->setCursorToCurrentLine();
     }
