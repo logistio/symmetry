@@ -54,6 +54,8 @@ class CsvFileBatchStreamer
         $this->csvStringParser = new CsvStringToArray($delimiter);
 
         $this->batchSize = $batchSize;
+
+        $this->setCursorToCurrentLine();
     }
 
     /**
