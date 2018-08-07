@@ -10,6 +10,7 @@ use Logistio\Symmetry\Provider\Slack\SlackServiceProvider;
 use Logistio\Symmetry\PublicId\PublicIdConverter;
 use Logistio\Symmetry\PublicId\PublicIdManager;
 use Logistio\Symmetry\Service\App\Application;
+use Logistio\Symmetry\Util\Type\PropertyTypeCastServiceProvider;
 use Logistio\Symmetry\Validator\Env\DotEnvValidatorServiceProvider;
 
 class SymmetryServiceProvider extends ServiceProvider
@@ -45,6 +46,8 @@ class SymmetryServiceProvider extends ServiceProvider
         \App::register(SlackServiceProvider::class);
 
         \App::register(ConsoleServiceProvider::class);
+
+        \App::register(PropertyTypeCastServiceProvider::class);
     }
 
     /**
