@@ -65,6 +65,14 @@ abstract class EloquentQuery extends Query
     }
 
     /**
+     * @return Builder
+     */
+    public function getQueryBuilder()
+    {
+        return $this->queryBuilder;
+    }
+
+    /**
      * Create the global search query string.
      *
      * @param Builder $queryBuilder
