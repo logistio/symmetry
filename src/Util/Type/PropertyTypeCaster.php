@@ -25,7 +25,7 @@ class PropertyTypeCaster
                 $property = $castItem['property'];
                 $type = $castItem['type'];
 
-                if (!isset($item->{$property})) {
+                if (! property_exists((object) $item, $property)) {
                     throw new \Exception("The property `{$property}` does not exist for item at index {$index}.");
                 }
 
@@ -51,7 +51,7 @@ class PropertyTypeCaster
                 $property = $castItem['property'];
                 $type = $castItem['type'];
 
-                if (!isset($item[$property])) {
+                if (! array_key_exists($property, $item)) {
                     throw new \Exception("The property `{$property}` does not exist for item at index {$index}.");
                 }
 
