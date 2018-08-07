@@ -4,6 +4,8 @@
 namespace Logistio\Symmetry\Util\Type;
 
 
+use \InvalidArgumentException;
+
 class PropertyTypeCaster
 {
     const TYPE_FLOAT = 'FLOAT';
@@ -20,20 +22,39 @@ class PropertyTypeCaster
     public function typeCastObjectArray(array $list, array $castConfig = [])
     {
         foreach ($list as $index => $item) {
-            foreach ($castConfig as $castItem) {
 
-                $property = $castItem['property'];
-                $type = $castItem['type'];
+            $this->typeCastObject($item, $castConfig);
 
-                if (! property_exists((object) $item, $property)) {
-                    throw new \Exception("The property `{$property}` does not exist for item at index {$index}.");
-                }
-
-                $item->{$property} = $this->castValueForType($item->{$property}, $type);
-            }
         }
 
         return $list;
+    }
+
+    /**
+     * @param $obj
+     * @param array $castConfig
+     * @return mixed
+     * @throws \Exception
+     */
+    public function typeCastObject($obj, array $castConfig = [])
+    {
+        if (!is_object($obj)) {
+            throw new InvalidArgumentException("Argument passed to `typeCastObject` is not an object.");
+        }
+
+        foreach ($castConfig as $castItem) {
+
+            $property = $castItem['property'];
+            $type = $castItem['type'];
+
+            if (! property_exists((object) $obj, $property)) {
+                throw new \Exception("The property `{$property}` does not exist.");
+            }
+
+            $obj->{$property} = $this->castValueForType($obj->{$property}, $type);
+        }
+
+        return $obj;
     }
 
     /**
@@ -46,20 +67,33 @@ class PropertyTypeCaster
     public function typeCastAssociativeArray(array $list, array $castConfig = [])
     {
         foreach ($list as $index => &$item) {
-            foreach ($castConfig as $castItem) {
-
-                $property = $castItem['property'];
-                $type = $castItem['type'];
-
-                if (! array_key_exists($property, $item)) {
-                    throw new \Exception("The property `{$property}` does not exist for item at index {$index}.");
-                }
-
-                $item[$property] = $this->castValueForType($item[$property], $type);
-            }
+            $this->typeCastArray($item, $castConfig);
         }
 
         return $list;
+    }
+
+    /**
+     * @param array $element
+     * @param array $castConfig
+     * @return array
+     * @throws \Exception
+     */
+    public function typeCastArray(array &$element, array $castConfig = [])
+    {
+        foreach ($castConfig as $castItem) {
+
+            $property = $castItem['property'];
+            $type = $castItem['type'];
+
+            if (! array_key_exists($property, $element)) {
+                throw new \Exception("The property `{$property}` does not exist for item.");
+            }
+
+            $element[$property] = $this->castValueForType($element[$property], $type);
+        }
+
+        return $element;
     }
 
     /**
