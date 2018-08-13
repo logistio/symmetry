@@ -17,4 +17,9 @@ abstract class ProcessPayload implements Arrayable
     {
         return true == $this->incubatorMode;
     }
+
+    /**
+     * @return string
+     */
+    public abstract function getType();
 }
