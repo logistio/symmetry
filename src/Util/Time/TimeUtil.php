@@ -225,4 +225,69 @@ class TimeUtil
 
         return $dates;
     }
+
+    /**
+     * Return true if the two carbon objects
+     * have the same date.
+     *
+     * @param Carbon $d1
+     * @param Carbon $d2
+     * @return bool
+     */
+    public static function areSameDate(Carbon $d1, Carbon $d2)
+    {
+        return $d1->toDateString() == $d2->toDateString();
+    }
+
+    /**
+     * Return true if the $date is on the last
+     * day of it's month.
+     *
+     * @param Carbon $date
+     * @return bool
+     */
+    public static function isEndOfMonth(Carbon $date)
+    {
+        $copy = $date->copy();
+        $copy->endOfMonth();
+
+        return static::areSameDate($copy, $date);
+    }
+
+    /**
+     * By default Carbon, or PHP's Datetime object rather, will
+     * overflow the date when adding months. This function
+     * allows the client to turn off the overflow
+     * and resolve to the end of the next month.
+     *
+     * For example, by default adding
+     * a month to `2018-05-31` will result to `2018-07-01` even
+     * when the client expects the date to be `2018-06-30`.
+     *
+     *
+     * @param Carbon $date
+     * @param bool $overflow
+     */
+    public static function addMonth(Carbon $date, $overflow = false)
+    {
+        if ($overflow) {
+            $date->addMonth();
+        }
+
+        $isEndOfMonth = static::isEndOfMonth($date);
+
+        if (!$isEndOfMonth) {
+            $date->addMonth();
+            return;
+        }
+
+        $date->addDay();
+
+        // Preserve the original time
+        $originalTime = $date->toTimeString();
+
+        $date->endOfMonth();
+
+        $date->setTimeFromTimeString($originalTime);
+    }
 }

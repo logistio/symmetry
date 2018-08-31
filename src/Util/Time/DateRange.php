@@ -116,7 +116,9 @@ class DateRange implements Arrayable
                 break;
             }
             case static::$PERIOD_MONTHS: {
-                $carbonToIncrement->addMonth();
+                // Use the TimeUtil function to resolve
+                // overflowing dates.
+                TimeUtil::addMonth($carbonToIncrement);
                 break;
             }
             case static::$PERIOD_WEEKS: {

@@ -12,7 +12,7 @@ class DateRangeTest extends TestCase
     /**
      * @test
      */
-    public function testGetTimePeriodBetween()
+    public function test_get_time_period_between()
     {
         // YEARS
         $dateRange = new DateRange(
@@ -92,4 +92,18 @@ class DateRangeTest extends TestCase
         $this->assertEquals(1, count($dates));
     }
 
+    /**
+     * @test
+     */
+    public function test_get_months_between_when_start_is_end_of_month()
+    {
+        $dateFrom = TimeUtil::paramDateToCarbon('2018-05-31');
+        $dateTo = TimeUtil::paramDateToCarbon('2018-08-31');
+
+        $dateRange = new DateRange($dateFrom, $dateTo);
+
+        $dates = $dateRange->getMonthDatesBetween();
+
+        $this->assertEquals(4, count($dates));
+    }
 }
