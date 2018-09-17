@@ -272,6 +272,7 @@ class TimeUtil
     {
         if ($overflow) {
             $date->addMonth();
+            return;
         }
 
         $isEndOfMonth = static::isEndOfMonth($date);

@@ -82,7 +82,9 @@ trait BaseModelTrait
     {
         $array = parent::toArray();
 
-        $array = $this->attachMissingPubid($array);
+        if ($this->pubIdColumn === true) {
+            $array = $this->attachMissingPubid($array);
+        }
 
         if (is_null($options)) {
             return $array;
