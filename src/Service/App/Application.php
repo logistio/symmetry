@@ -20,7 +20,7 @@ class Application
      *
      * @var array
      */
-    private $sigtermHandlers = [];
+    private $sigtermCallbacks = [];
 
     /**
      * Application constructor.
@@ -114,7 +114,7 @@ class Application
 
             $this->sigtermTriggered = true;
 
-            $this->invokeSigtermHandlers();
+            $this->invokeSigtermCallbacks();
         });
     }
 
@@ -123,25 +123,25 @@ class Application
      */
     public function resetSigtermHandler()
     {
-        $this->resetSigtermHandler();
+        $this->registerSigtermHandler();
     }
 
     /**
-     * @param \Closure $closure
+     * @param $callback
      */
-    public function addSigtermHandler(\Closure $closure)
+    public function addSigtermCallback($callback)
     {
-        $this->sigtermHandlers[] = $closure;
+        $this->sigtermCallbacks[] = $callback;
     }
 
     /**
      *
      */
-    private function invokeSigtermHandlers()
+    private function invokeSigtermCallbacks()
     {
         // Invoke the handlers in the order in which they were added (i.e. in reverse)
 
-        $handlers = array_reverse($this->sigtermHandlers);
+        $handlers = array_reverse($this->sigtermCallbacks);
 
         foreach ($handlers as $handler) {
             if (is_callable($handler)) {
