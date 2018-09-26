@@ -144,7 +144,7 @@ class Application
         $handlers = array_reverse($this->sigtermCallbacks);
 
         foreach ($handlers as $handler) {
-            if (is_callable($handler)) {
+            if ($handler instanceof \Closure || is_callable($handler)) {
                 $handler();
             }
         }
