@@ -14,6 +14,15 @@ class Application
     public $sigtermTriggered = false;
 
     /**
+     * An array of closures to be executed
+     * in reverse when a SIGTERM signal
+     * is caught.
+     *
+     * @var array
+     */
+    private $sigtermHandlers = [];
+
+    /**
      * Application constructor.
      */
     public function __construct()
@@ -100,10 +109,41 @@ class Application
             extension_loaded('pcntl');
     }
 
-    private function registerSigtermHandler()
-    {
+    public function registerSigtermHandler() {
         pcntl_signal(SIGTERM, function($sig) {
+
             $this->sigtermTriggered = true;
+
+            $this->invokeSigtermHandlers();
         });
+    }
+
+    /**
+     *
+     */
+    public function resetSigtermHandler()
+    {
+        $this->resetSigtermHandler();
+    }
+
+    /**
+     * @param \Closure $closure
+     */
+    public function addSigtermHandler(\Closure $closure)
+    {
+        $this->sigtermHandlers[] = $closure;
+    }
+
+    /**
+     *
+     */
+    private function invokeSigtermHandlers()
+    {
+        // Invoke the handlers in the order in which they were added (i.e. in reverse)
+
+        /** @var \Closure $handler */
+        foreach (array_reverse($this->sigtermHandlers) as $handler) {
+            $handler();
+        }
     }
 }
