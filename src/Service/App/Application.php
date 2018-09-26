@@ -110,7 +110,7 @@ class Application
     }
 
     public function registerSigtermHandler() {
-        pcntl_signal(SIGTERM, function($sig) {
+        pcntl_signal(SIGTERM, function() {
 
             $this->sigtermTriggered = true;
 
