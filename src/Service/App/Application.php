@@ -110,12 +110,18 @@ class Application
     }
 
     public function registerSigtermHandler() {
-        pcntl_signal(SIGTERM, function() {
+        pcntl_signal(SIGTERM, $this->getSigtermHandler());
+    }
 
+    /**
+     * @return \Closure
+     */
+    public function getSigtermHandler() {
+        return function() {
             $this->sigtermTriggered = true;
 
             $this->invokeSigtermCallbacks();
-        });
+        };
     }
 
     /**
