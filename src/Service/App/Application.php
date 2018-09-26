@@ -141,9 +141,12 @@ class Application
     {
         // Invoke the handlers in the order in which they were added (i.e. in reverse)
 
-        /** @var \Closure $handler */
-        foreach (array_reverse($this->sigtermHandlers) as $handler) {
-            $handler();
+        $handlers = array_reverse($this->sigtermHandlers);
+
+        foreach ($handlers as $handler) {
+            if (is_callable($handler)) {
+                $handler();
+            }
         }
     }
 }
