@@ -61,5 +61,11 @@ class TimeUtilTest extends TestCase
 
         $this->assertEquals('2018-02-05', $date->toDateString());
 
+        $date = TimeUtil::paramDateToCarbon('2018-08-01');
+
+        TimeUtil::addMonth($date);
+
+        $this->assertEquals('2018-08-31', $date->toDateString());
+
     }
 }

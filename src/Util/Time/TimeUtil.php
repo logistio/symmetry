@@ -255,6 +255,23 @@ class TimeUtil
     }
 
     /**
+     * Return true if the $date is on the
+     * first day of it's month.
+     *
+     * @param Carbon $date
+     * @return bool
+     */
+    public static function isStartOfMonth(Carbon $date)
+    {
+        $copy = $date->copy();
+
+        $copy->startOfMonth();
+
+        return static::areSameDate($copy, $date);
+    }
+
+
+    /**
      * By default Carbon, or PHP's Datetime object rather, will
      * overflow the date when adding months. This function
      * allows the client to turn off the overflow
@@ -276,8 +293,9 @@ class TimeUtil
         }
 
         $isEndOfMonth = static::isEndOfMonth($date);
+        $isStartOfMonth = static::isStartOfMonth($date);
 
-        if (!$isEndOfMonth) {
+        if (!$isEndOfMonth && !$isStartOfMonth) {
             $date->addMonth();
             return;
         }
