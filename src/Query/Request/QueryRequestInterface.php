@@ -73,4 +73,9 @@ interface QueryRequestInterface
      */
     public function getFilters();
 
+    /**
+     * @return bool
+     */
+    public function isDateRangeAvailable();
+
 }

@@ -77,6 +77,10 @@ class QueryRequestDecorator
         $this->setFilters($queryRequest);
 
         $this->setApiColumnCodeTags($queryRequest);
+
+        $this->setAggregationPeriodScope($queryRequest);
+
+        $this->setDateRange($queryRequest);
     }
 
     /**
@@ -313,8 +317,7 @@ class QueryRequestDecorator
         $dateToInput = array_get($input, 'date_to', null);
 
         if (is_null($dateFromInput) || is_null($dateToInput)) {
-            $dateFrom = TimeUtil::today();
-            $dateTo = TimeUtil::today();
+            return;
         } else {
             $dateFrom = TimeUtil::paramDateToCarbon($dateFromInput);
             $dateTo = TimeUtil::paramDateToCarbon($dateToInput);

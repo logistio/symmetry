@@ -90,6 +90,14 @@ class QueryRequest implements QueryRequestInterface
     }
 
     /**
+     * @return bool
+     */
+    public function isDateRangeAvailable(): bool
+    {
+        return $this->getDateFrom() && $this->getDateTo();
+    }
+
+    /**
      * @param Carbon $dateFrom
      */
     public function setDateFrom(Carbon $dateFrom)
