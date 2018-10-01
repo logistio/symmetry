@@ -338,7 +338,7 @@ class QueryRequestDecorator
     }
 
     /**
-     * @param QueryRequestInterface $queryRequest
+     * @param QueryRequestInterface|QueryRequest $queryRequest
      */
     protected function setAggregationPeriodScope(QueryRequestInterface $queryRequest)
     {

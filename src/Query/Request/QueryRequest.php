@@ -56,6 +56,11 @@ class QueryRequest implements QueryRequestInterface
     protected $apiColumnCodeTagsIdx;
 
     /**
+     * @var string
+     */
+    protected $aggregationPeriodScope;
+
+    /**
      * Although the client may choose to filter the results based on a date
      * using the query request "filters" (if they are supported), the client
      * must explicitly specify a date range if they wish to aggregate
@@ -231,4 +236,19 @@ class QueryRequest implements QueryRequestInterface
         });
     }
 
+    /**
+     * @return string
+     */
+    public function getAggregationPeriodScope()
+    {
+        return $this->aggregationPeriodScope;
+    }
+
+    /**
+     * @param string $aggregationPeriodScope
+     */
+    public function setAggregationPeriodScope($aggregationPeriodScope)
+    {
+        $this->aggregationPeriodScope = $aggregationPeriodScope;
+    }
 }
