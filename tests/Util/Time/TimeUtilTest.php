@@ -66,6 +66,31 @@ class TimeUtilTest extends TestCase
         TimeUtil::addMonth($date);
 
         $this->assertEquals('2018-08-31', $date->toDateString());
+    }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function test_sub_month()
+    {
+        $date = TimeUtil::paramDateToCarbon('2018-08-31');
+
+        TimeUtil::subMonth($date);
+
+        $this->assertEquals('2018-08-01', $date->toDateString());
+
+        $date = TimeUtil::paramDateToCarbon('2018-08-01');
+
+        TimeUtil::subMonth($date);
+
+        $this->assertEquals('2018-07-01', $date->toDateString());
+
+        $date = TimeUtil::paramDateToCarbon('2018-08-05');
+
+        TimeUtil::subMonth($date);
+
+        $this->assertEquals('2018-07-05', $date->toDateString());
 
     }
 }

@@ -309,4 +309,36 @@ class TimeUtil
 
         $date->setTimeFromTimeString($originalTime);
     }
+
+    /**
+     * Similar to the `addMonth` static method except
+     * this method handles subtraction of months.
+     *
+     * @param Carbon $date
+     * @param bool $overflow
+     */
+    public static function subMonth(Carbon $date, $overflow = false)
+    {
+        if ($overflow) {
+            $date->subMonth();
+            return;
+        }
+
+        $isEndOfMonth = static::isEndOfMonth($date);
+        $isStartOfMonth = static::isStartOfMonth($date);
+
+        if (!$isEndOfMonth && !$isStartOfMonth) {
+            $date->subMonth();
+            return;
+        }
+
+        $date->subDay();
+
+        // Preserve the original time
+        $originalTime = $date->toTimeString();
+
+        $date->startOfMonth();
+
+        $date->setTimeFromTimeString($originalTime);
+    }
 }
