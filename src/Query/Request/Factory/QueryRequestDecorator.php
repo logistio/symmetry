@@ -3,6 +3,7 @@
 namespace Logistio\Symmetry\Query\Request\Factory;
 
 use Logistio\Symmetry\Exception\ValidationException;
+use Logistio\Symmetry\Process\Query\Aggregate\Time\BaseTimeScopeAggregator;
 use Logistio\Symmetry\Query\Filter\Filter;
 use Logistio\Symmetry\Query\Macro\Cleaner\QueryTokenCleaner;
 use Logistio\Symmetry\Query\Macro\ColumnCode\ApiColumnCodeTag;
@@ -10,6 +11,7 @@ use Logistio\Symmetry\Query\Macro\Validator\QueryRequestFilterValidator;
 use Logistio\Symmetry\Query\Macro\Validator\QueryTokenValidator;
 use Logistio\Symmetry\Query\Predicate\Factory\PredicateFactory;
 use Logistio\Symmetry\Query\Request\Order\ColumnOrder;
+use Logistio\Symmetry\Query\Request\QueryRequest;
 use Logistio\Symmetry\Query\Request\QueryRequestInterface;
 use Logistio\Symmetry\Util\Time\TimeUtil;
 
@@ -58,7 +60,7 @@ class QueryRequestDecorator
      * @throws ValidationException
      * @throws \Exception
      */
-    public function decorate(QueryRequestInterface $queryRequest, array $input )
+    public function decorate(QueryRequestInterface $queryRequest, array $input)
     {
         $this->input = $input;
 
@@ -73,6 +75,24 @@ class QueryRequestDecorator
         $this->setPageLength($queryRequest);
 
         $this->setFilters($queryRequest);
+
+        $this->setApiColumnCodeTags($queryRequest);
+    }
+
+    /**
+     * @param QueryRequestInterface|QueryRequest $queryRequest
+     */
+    protected function setApiColumnCodeTags(QueryRequestInterface $queryRequest)
+    {
+        $apiColumnCodeTags = array_get($this->input, 'api_column_code_tags', []);
+
+        if (is_null($apiColumnCodeTags)) {
+            return;
+        }
+
+        $queryRequest->setApiColumnCodeTags(
+            ApiColumnCodeTag::makeFromArray($apiColumnCodeTags)
+        );
     }
 
     /**
@@ -280,9 +300,12 @@ class QueryRequestDecorator
      * query request from the input.
      *
      * @param QueryRequestInterface $queryRequest
+     * @param $allDayTime boolean - Set to true if the
+     * start date's time be set to `00:00:00` and the
+     * end date's time be set tot `23:59:59`.
      * @throws ValidationException
      */
-    protected function setDateRange(QueryRequestInterface $queryRequest)
+    protected function setDateRange(QueryRequestInterface $queryRequest, $allDayTime = null)
     {
         $input = $this->input;
 
@@ -301,9 +324,45 @@ class QueryRequestDecorator
             throw new ValidationException("The `date_from` must be equal to or before the `date_to`.");
         }
 
+        if ($allDayTime == true) {
+            $dateFrom->setTime(0,0,0);
+            $dateTo->setTime(23,59,59);
+        }
+
         $queryRequest->setDateFrom($dateFrom);
 
         $queryRequest->setDateTo($dateTo);
+    }
+
+    /**
+     * @param QueryRequestInterface $queryRequest
+     */
+    protected function setAggregationPeriodScope(QueryRequestInterface $queryRequest)
+    {
+        $scope = array_get($this->input, 'aggregation_period_scope', null);
+
+        if (is_null($scope)) {
+            // Set a sensible default.
+            $scope = BaseTimeScopeAggregator::SCOPE_ALL;
+        }
+
+        // Validate the scope
+        $this->validateIfScopeIsSupported($scope);
+
+        $queryRequest->setAggregationPeriodScope($scope);
+    }
+
+    /**
+     * @param $scope
+     * @throws ValidationException
+     */
+    protected function validateIfScopeIsSupported($scope)
+    {
+        $supportedScopes = BaseTimeScopeAggregator::getSupportedScopes();
+
+        if (!in_array($scope, $supportedScopes)) {
+            throw new ValidationException("The `aggregation_period_scope` {$scope} is not supported for this request.");
+        }
     }
 
     /**
