@@ -64,6 +64,13 @@ class QueryRequestDecorator
     {
         $this->input = $input;
 
+        // It is important to set the API column codes
+        // first as subsequent decoration method
+        // calls will depend on them.
+        $this->setApiColumnCodeTags($queryRequest);
+
+        $this->setAggregationPeriodScope($queryRequest);
+
         $this->setColumnOrdering($queryRequest);
 
         $this->setSearchableColumns($queryRequest);
@@ -76,10 +83,6 @@ class QueryRequestDecorator
 
         $this->setFilters($queryRequest);
 
-        $this->setApiColumnCodeTags($queryRequest);
-
-        $this->setAggregationPeriodScope($queryRequest);
-
         $this->setDateRange($queryRequest);
     }
 
@@ -89,10 +92,6 @@ class QueryRequestDecorator
     protected function setApiColumnCodeTags(QueryRequestInterface $queryRequest)
     {
         $apiColumnCodeTags = array_get($this->input, 'api_column_code_tags', []);
-
-        if (is_null($apiColumnCodeTags)) {
-            return;
-        }
 
         $queryRequest->setApiColumnCodeTags(
             ApiColumnCodeTag::makeFromArray($apiColumnCodeTags)
