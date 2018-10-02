@@ -108,6 +108,98 @@ class DateRange implements Arrayable
         return $dates;
     }
 
+    /**
+     * @return array
+     */
+    public function segmentToYearsTupleCollection()
+    {
+        return $this->segmentToTupleCollectionForPeriod(static::$PERIOD_YEARS);
+    }
+
+    /**
+     * @return array
+     */
+    public function segmentToMonthsTupleCollection()
+    {
+        return $this->segmentToTupleCollectionForPeriod(static::$PERIOD_MONTHS);
+    }
+
+    /**
+     * @return array
+     */
+    public function segmentToWeeksTupleCollection()
+    {
+        return $this->segmentToTupleCollectionForPeriod(static::$PERIOD_WEEKS);
+    }
+
+    /**
+     * @return array
+     */
+    public function segmentToDaysTupleCollection()
+    {
+        return $this->segmentToTupleCollectionForPeriod(static::$PERIOD_DAYS);
+    }
+
+    /**
+     * Given the start and end date this DateRange instance represents,
+     * create a collection of tuples that are split by the $period
+     * argument (eg. YEARS, MONTHS, WEEKS).
+     * Eg. date_from: 2018-02-01, date_to:2018-04-30
+     * - segmentToTupleCollectionForPeriod('MONTHS')
+     * - Output:
+     *
+     * [0]
+     *      [0]: 2018-02-01
+     *      [1]: 2018-02-28
+     * [1]
+     *      [0]: 2018-03-01
+     *      [1]: 2018-03-31
+     * [2]
+     *      [0]: 2018-04-01
+     *      [1]: 2018-04-30
+     *
+     * @param $period
+     * @return array
+     */
+    public function segmentToTupleCollectionForPeriod($period)
+    {
+        $tuples = [];
+
+        $cursor = $this->dateFrom->copy();
+
+        while ($cursor->lte($this->dateTo)) {
+
+            if ($period == static::$PERIOD_DAYS) {
+                $tuples[] = [
+                    $cursor->copy(),
+                    $cursor->copy()
+                ];
+
+                $cursor->addDay();
+
+                continue;
+            }
+
+            $tuple = [$cursor->copy()];
+
+            $this->incrementBy($cursor, $period);
+
+            if ($cursor->gt($this->dateTo)) {
+                break;
+            }
+
+            $tuple[] = $cursor->copy();
+
+            $tuples[] = $tuple;
+
+            if ($period != static::$PERIOD_YEARS) {
+                $cursor->addDay();
+            }
+        }
+
+        return $tuples;
+    }
+
     private function incrementBy(Carbon $carbonToIncrement, $period)
     {
         switch ($period) {
@@ -122,7 +214,7 @@ class DateRange implements Arrayable
                 break;
             }
             case static::$PERIOD_WEEKS: {
-                $carbonToIncrement->addWeek();
+                $carbonToIncrement->addDay(6);
                 break;
             }
             case static::$PERIOD_DAYS: {

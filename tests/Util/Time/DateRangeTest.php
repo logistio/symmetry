@@ -12,8 +12,111 @@ class DateRangeTest extends TestCase
     /**
      * @test
      */
+    public function test_segment_to_tuple_collection_for_period()
+    {
+        $dateRange = new DateRange(
+            TimeUtil::paramDateToCarbon('2018-02-01'),
+            TimeUtil::paramDateToCarbon('2018-05-01')
+        );
+
+        $segments = collect($dateRange->segmentToMonthsTupleCollection());
+
+        $nth = $segments[0];
+
+        $this->assertEquals('2018-02-01', $nth[0]->toDateString());
+        $this->assertEquals('2018-02-28', $nth[1]->toDateString());
+
+        $nth = $segments[1];
+
+        $this->assertEquals('2018-03-01', $nth[0]->toDateString());
+        $this->assertEquals('2018-03-31', $nth[1]->toDateString());
+
+        $nth = $segments[2];
+
+        $this->assertEquals('2018-04-01', $nth[0]->toDateString());
+        $this->assertEquals('2018-04-30', $nth[1]->toDateString());
+
+
+        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+        $dateRange = new DateRange(
+            TimeUtil::paramDateToCarbon('2018-01-01'),
+            TimeUtil::paramDateToCarbon('2018-01-03')
+        );
+
+        $segments = collect($dateRange->segmentToDaysTupleCollection());
+
+        $nth = $segments[0];
+
+        $this->assertEquals('2018-01-01', $nth[0]->toDateString());
+        $this->assertEquals('2018-01-01', $nth[1]->toDateString());
+
+        $nth = $segments[1];
+
+        $this->assertEquals('2018-01-02', $nth[0]->toDateString());
+        $this->assertEquals('2018-01-02', $nth[1]->toDateString());
+
+        $nth = $segments[2];
+
+        $this->assertEquals('2018-01-03', $nth[0]->toDateString());
+        $this->assertEquals('2018-01-03', $nth[1]->toDateString());
+
+        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+        $dateRange = new DateRange(
+            TimeUtil::paramDateToCarbon('2018-01-01'),
+            TimeUtil::paramDateToCarbon('2018-01-14')
+        );
+
+        $segments = collect($dateRange->segmentToWeeksTupleCollection());
+
+        $nth = $segments[0];
+
+        $this->assertEquals('2018-01-01', $nth[0]->toDateString());
+        $this->assertEquals('2018-01-07', $nth[1]->toDateString());
+
+        $nth = $segments[1];
+
+        $this->assertEquals('2018-01-08', $nth[0]->toDateString());
+        $this->assertEquals('2018-01-14', $nth[1]->toDateString());
+
+        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+
+        $dateRange = new DateRange(
+            TimeUtil::paramDateToCarbon('2016-01-01'),
+            TimeUtil::paramDateToCarbon('2018-01-01')
+        );
+
+        $segments = collect($dateRange->segmentToYearsTupleCollection());
+
+        $nth = $segments[0];
+
+        $this->assertEquals('2016-01-01', $nth[0]->toDateString());
+        $this->assertEquals('2017-01-01', $nth[1]->toDateString());
+
+        $nth = $segments[1];
+
+        $this->assertEquals('2017-01-01', $nth[0]->toDateString());
+        $this->assertEquals('2018-01-01', $nth[1]->toDateString());
+
+//        foreach ($segments as $segment) {
+//
+//            echo "|-- {$segment[0]->toDateString()} --> {$segment[1]->toDateString()} \n";
+//        }
+//
+//        dd("");
+    }
+
+
+    /**
+     * @test
+     */
     public function test_get_time_period_between()
     {
+
         // YEARS
         $dateRange = new DateRange(
             TimeUtil::now()->subYear(),
