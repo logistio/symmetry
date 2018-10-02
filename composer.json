@@ -1,6 +1,6 @@
 {
     "name": "logistio/symmetry",
-    "version": "0.9.13",
+    "version": "0.9.14",
     "type": "library",
     "license": "MIT",
     "require": {

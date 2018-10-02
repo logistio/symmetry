@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Logistio\Symmetry\Query\Macro\ColumnCode\ApiColumnCodeTag;
 use Logistio\Symmetry\Query\Request\Order\ColumnOrder;
+use Logistio\Symmetry\Util\Time\DateRange;
 
 /**
  * Class QueryRequest
@@ -89,7 +90,7 @@ class QueryRequest implements QueryRequestInterface
     /**
      * @return Carbon
      */
-    public function getDateTo(): Carbon
+    public function getDateTo()
     {
         return $this->dateTo;
     }
@@ -100,6 +101,17 @@ class QueryRequest implements QueryRequestInterface
     public function isDateRangeAvailable(): bool
     {
         return $this->getDateFrom() && $this->getDateTo();
+    }
+
+    /**
+     * @return DateRange
+     */
+    public function getDateRange()
+    {
+        return new DateRange(
+            $this->getDateFrom(),
+            $this->getDateTo()
+        );
     }
 
     /**
