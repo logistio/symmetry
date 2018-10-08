@@ -180,6 +180,16 @@ class TimeUtil
     }
 
     /**
+     * @param string $date
+     * @return false|TimeUtil
+     * @throws \Exception
+     */
+    public static function apiDateToCarbon($date)
+    {
+        return self::paramDateToCarbon($date);
+    }
+
+    /**
      * @param Carbon $start
      * @param Carbon $end
      * @return bool
