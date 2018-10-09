@@ -214,7 +214,7 @@ class DateRange implements Arrayable
                 break;
             }
             case static::$PERIOD_WEEKS: {
-                $carbonToIncrement->addDay(6);
+                $carbonToIncrement->addDay(7);
                 break;
             }
             case static::$PERIOD_DAYS: {
