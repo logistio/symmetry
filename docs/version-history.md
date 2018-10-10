@@ -1,6 +1,10 @@
 VERSION HISTORY
 -----
 
+2018-10-10 WED:
+[DP]
+- v0.11.3
+    - Refactored `ProcessQueryRequestDecorator` to add the API column code tags.
 
 2018-10-08 MON:
 [PTS]
