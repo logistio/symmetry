@@ -3,6 +3,8 @@ VERSION HISTORY
 
 2018-10-31 WED:
 [DP]
+- v0.12.3
+    - Modified the HttpRequestAgentFactory to consume the `Symmetry-Device-Screen` header instead of the cookie.
 - v0.12.2
     - Modified the CORS Service to set the request origin to the 'Access-Control-Allow-Origin' header,
     rather than relying on the * wildcard.

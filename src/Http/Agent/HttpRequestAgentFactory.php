@@ -36,10 +36,10 @@ class HttpRequestAgentFactory
 
         $httpRequestAgent->setIsRobot($agent->isRobot());
 
-        $deviceScreenCookie = $request->cookie('device_screen');
+        $deviceScreen = $request->headers->get('Symmetry-Device-Screen');
 
-        if ($deviceScreenCookie) {
-            $screenDimensions = explode(";", $deviceScreenCookie);
+        if ($deviceScreen) {
+            $screenDimensions = explode(";", $deviceScreen);
 
             $httpRequestAgent->setScreenWidth(array_get($screenDimensions, 0));
             $httpRequestAgent->setScreenHeight(array_get($screenDimensions, 1));
