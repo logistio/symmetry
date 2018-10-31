@@ -5,7 +5,9 @@ namespace Logistio\Symmetry;
 
 
 use Illuminate\Support\ServiceProvider;
+use Jenssegers\Agent\AgentServiceProvider;
 use Logistio\Symmetry\Console\ConsoleServiceProvider;
+use Logistio\Symmetry\Http\Agent\HttpRequestAgentServiceProvider;
 use Logistio\Symmetry\Provider\Slack\SlackServiceProvider;
 use Logistio\Symmetry\PublicId\PublicIdConverter;
 use Logistio\Symmetry\PublicId\PublicIdManager;
@@ -41,6 +43,11 @@ class SymmetryServiceProvider extends ServiceProvider
 
     private function registerProviders()
     {
+        // Third party service provider
+        \App::register(AgentServiceProvider::class);
+
+        \App::register(HttpRequestAgentServiceProvider::class);
+
         \App::register(DotEnvValidatorServiceProvider::class);
 
         \App::register(SlackServiceProvider::class);

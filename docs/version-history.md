@@ -1,6 +1,12 @@
 VERSION HISTORY
 -----
 
+2018-10-31 WED:
+[DP]
+- v0.12.0
+    - Added the HttpRequestAgent class to store the request agent details.
+    - Added the `jenssegers/agent` package.
+
 2018-10-10 WED:
 [DP]
 - v0.11.3
