@@ -3,6 +3,9 @@ VERSION HISTORY
 
 2018-10-31 WED:
 [DP]
+- v0.12.2
+    - Modified the CORS Service to set the request origin to the 'Access-Control-Allow-Origin' header,
+    rather than relying on the * wildcard.
 - v0.12.1
     - Removed return types from HttpRequestAgent.
 - v0.12.0
