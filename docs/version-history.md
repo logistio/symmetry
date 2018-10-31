@@ -3,6 +3,8 @@ VERSION HISTORY
 
 2018-10-31 WED:
 [DP]
+- v0.12.1
+    - Removed return types from HttpRequestAgent.
 - v0.12.0
     - Added the HttpRequestAgent class to store the request agent details.
     - Added the `jenssegers/agent` package.

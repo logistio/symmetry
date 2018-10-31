@@ -71,7 +71,7 @@ class HttpRequestAgent implements Arrayable
     /**
      * @return string
      */
-    public function getDeviceName(): string
+    public function getDeviceName()
     {
         return $this->deviceName;
     }
@@ -79,7 +79,7 @@ class HttpRequestAgent implements Arrayable
     /**
      * @param string $deviceName
      */
-    public function setDeviceName(string $deviceName): void
+    public function setDeviceName($deviceName)
     {
         $this->deviceName = $deviceName;
     }
@@ -87,7 +87,7 @@ class HttpRequestAgent implements Arrayable
     /**
      * @return string
      */
-    public function getSystemName(): string
+    public function getSystemName()
     {
         return $this->systemName;
     }
@@ -95,7 +95,7 @@ class HttpRequestAgent implements Arrayable
     /**
      * @param string $systemName
      */
-    public function setSystemName(string $systemName): void
+    public function setSystemName($systemName)
     {
         $this->systemName = $systemName;
     }
@@ -103,7 +103,7 @@ class HttpRequestAgent implements Arrayable
     /**
      * @return string
      */
-    public function getPlatformVersion(): string
+    public function getPlatformVersion()
     {
         return $this->platformVersion;
     }
@@ -111,7 +111,7 @@ class HttpRequestAgent implements Arrayable
     /**
      * @param string $platformVersion
      */
-    public function setPlatformVersion(string $platformVersion): void
+    public function setPlatformVersion($platformVersion)
     {
         $this->platformVersion = $platformVersion;
     }
@@ -119,7 +119,7 @@ class HttpRequestAgent implements Arrayable
     /**
      * @return string
      */
-    public function getBrowserName(): string
+    public function getBrowserName()
     {
         return $this->browserName;
     }
@@ -127,7 +127,7 @@ class HttpRequestAgent implements Arrayable
     /**
      * @param string $browserName
      */
-    public function setBrowserName(string $browserName): void
+    public function setBrowserName($browserName)
     {
         $this->browserName = $browserName;
     }
@@ -135,7 +135,7 @@ class HttpRequestAgent implements Arrayable
     /**
      * @return string
      */
-    public function getBrowserVersion(): string
+    public function getBrowserVersion()
     {
         return $this->browserVersion;
     }
@@ -143,7 +143,7 @@ class HttpRequestAgent implements Arrayable
     /**
      * @param string $browserVersion
      */
-    public function setBrowserVersion(string $browserVersion): void
+    public function setBrowserVersion($browserVersion)
     {
         $this->browserVersion = $browserVersion;
     }
@@ -151,7 +151,7 @@ class HttpRequestAgent implements Arrayable
     /**
      * @return bool
      */
-    public function isDesktop(): bool
+    public function isDesktop()
     {
         return $this->isDesktop;
     }
@@ -159,7 +159,7 @@ class HttpRequestAgent implements Arrayable
     /**
      * @return bool
      */
-    public function isTablet(): bool
+    public function isTablet()
     {
         return $this->isTablet;
     }
@@ -167,7 +167,7 @@ class HttpRequestAgent implements Arrayable
     /**
      * @param bool $isTablet
      */
-    public function setIsTablet(bool $isTablet): void
+    public function setIsTablet($isTablet)
     {
         $this->isTablet = $isTablet;
     }
@@ -175,7 +175,7 @@ class HttpRequestAgent implements Arrayable
     /**
      * @param bool $isDesktop
      */
-    public function setIsDesktop(bool $isDesktop): void
+    public function setIsDesktop($isDesktop)
     {
         $this->isDesktop = $isDesktop;
     }
@@ -183,7 +183,7 @@ class HttpRequestAgent implements Arrayable
     /**
      * @return bool
      */
-    public function isPhone(): bool
+    public function isPhone()
     {
         return $this->isPhone;
     }
@@ -191,7 +191,7 @@ class HttpRequestAgent implements Arrayable
     /**
      * @param bool $isPhone
      */
-    public function setIsPhone(bool $isPhone): void
+    public function setIsPhone($isPhone)
     {
         $this->isPhone = $isPhone;
     }
@@ -199,7 +199,7 @@ class HttpRequestAgent implements Arrayable
     /**
      * @return bool
      */
-    public function isRobot(): bool
+    public function isRobot()
     {
         return $this->isRobot;
     }
@@ -207,7 +207,7 @@ class HttpRequestAgent implements Arrayable
     /**
      * @param bool $isRobot
      */
-    public function setIsRobot(bool $isRobot): void
+    public function setIsRobot($isRobot)
     {
         $this->isRobot = $isRobot;
     }
@@ -215,7 +215,7 @@ class HttpRequestAgent implements Arrayable
     /**
      * @return int
      */
-    public function getScreenWidth(): int
+    public function getScreenWidth()
     {
         return $this->screenWidth;
     }
@@ -223,7 +223,7 @@ class HttpRequestAgent implements Arrayable
     /**
      * @param int $screenWidth
      */
-    public function setScreenWidth(int $screenWidth): void
+    public function setScreenWidth($screenWidth)
     {
         $this->screenWidth = $screenWidth;
     }
@@ -231,7 +231,7 @@ class HttpRequestAgent implements Arrayable
     /**
      * @return int
      */
-    public function getScreenHeight(): int
+    public function getScreenHeight()
     {
         return $this->screenHeight;
     }
@@ -239,7 +239,7 @@ class HttpRequestAgent implements Arrayable
     /**
      * @param int $screenHeight
      */
-    public function setScreenHeight(int $screenHeight): void
+    public function setScreenHeight($screenHeight)
     {
         $this->screenHeight = $screenHeight;
     }
@@ -247,7 +247,7 @@ class HttpRequestAgent implements Arrayable
     /**
      * @return string
      */
-    public function getIp(): string
+    public function getIp()
     {
         return $this->ip;
     }
@@ -255,7 +255,7 @@ class HttpRequestAgent implements Arrayable
     /**
      * @param string $ip
      */
-    public function setIp(string $ip): void
+    public function setIp($ip)
     {
         $this->ip = $ip;
     }
