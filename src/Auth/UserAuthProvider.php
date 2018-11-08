@@ -4,7 +4,6 @@ namespace Logistio\Symmetry\Auth;
 
 use iCabbi\Insights\Database\Models\User;
 use Illuminate\Auth\Authenticatable;
-use Illuminate\Support\Facades\DB;
 
 class UserAuthProvider
 {
@@ -69,7 +68,7 @@ class UserAuthProvider
         self::$isResetAfterGetUser = false;
         self::$overrideUser = null;
         try {
-            DB::transaction(function () {
+            \DB::transaction(function () {
                 \Auth::logout();
             });
         } catch (\Exception $e) {
