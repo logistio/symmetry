@@ -68,7 +68,7 @@ class UserAuthProvider
         self::$isResetAfterGetUser = false;
         self::$overrideUser = null;
         try {
-            \DB::transaction(function () {
+            \DB::transaction(function() {
                 \Auth::logout();
             });
         } catch (\Exception $e) {
