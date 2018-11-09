@@ -1,6 +1,10 @@
 VERSION HISTORY
 -----
 
+2018-11-09 FRI:
+[DP]
+- Changed `processLogs` relation of the `Process` class to order by created_at and id in ascending order. 
+
 2018-10-31 WED:
 [DP]
 - v0.12.3

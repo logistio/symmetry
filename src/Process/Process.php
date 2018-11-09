@@ -88,7 +88,9 @@ class Process extends BaseModel
      */
     public function processLogs()
     {
-        return $this->hasMany(ProcessLog::class);
+        return $this->hasMany(ProcessLog::class)
+            ->orderBy('created_at')
+            ->orderBy('id');
     }
 
     /*
