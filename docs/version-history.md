@@ -1,6 +1,10 @@
 VERSION HISTORY
 -----
 
+2018-11-19 FRI:
+[DP]
+- Changed the `ColumnOrder` instance variables to be puplic. 
+
 2018-11-09 FRI:
 [DP]
 - Changed `processLogs` relation of the `Process` class to order by created_at and id in ascending order. 

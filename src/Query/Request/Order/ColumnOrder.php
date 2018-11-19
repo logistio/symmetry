@@ -21,19 +21,19 @@ class ColumnOrder
      *
      * @var string
      */
-    private $columnName;
+    public $columnName;
 
     /**
      * @var
      */
-    private $apiColumnCode;
+    public $apiColumnCode;
 
     /**
      * The order direction.
      *
      * @var string
      */
-    private $direction;
+    public $direction;
 
     /**
      * ColumnOrder constructor.
