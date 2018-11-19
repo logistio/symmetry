@@ -165,6 +165,20 @@ class QueryRequest implements QueryRequestInterface
     /**
      * @return array
      */
+    public function getDbColumnsToOrderBy()
+    {
+        $columnOrdering = $this->getColumnOrdering();
+
+        if (!$columnOrdering) {
+            return [];
+        }
+
+        return collect($columnOrdering)->pluck('columnName')->toArray();
+    }
+
+    /**
+     * @return array
+     */
     public function getSearchableColumns()
     {
         return $this->searchableColumns;

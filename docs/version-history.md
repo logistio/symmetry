@@ -1,9 +1,10 @@
 VERSION HISTORY
 -----
 
-2018-11-19 FRI:
+2018-11-19 MON:
 [DP]
-- Changed the `ColumnOrder` instance variables to be puplic. 
+- Changed the `ColumnOrder` instance variables to be public. 
+- Added method to get all db columns to order by. 
 
 2018-11-09 FRI:
 [DP]
