@@ -1,6 +1,11 @@
 VERSION HISTORY
 -----
 
+2018-11-29 THU:
+[DP]
+- Added the `ProcessClientState` interface.
+- Added a base `toArray()` method on the `ProcessPayload` class.
+
 2018-11-19 MON:
 [DP]
 - Changed the `ColumnOrder` instance variables to be public. 
