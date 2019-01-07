@@ -3,10 +3,10 @@
 
 namespace Logistio\Symmetry\Notification\Info;
 
-
+use Illuminate\Notifications\Notification;
 use Logistio\Symmetry\Notification\Info\Slack\SlackInfoMessageRenderer;
 
-class InfoMessageNotification
+class InfoMessageNotification extends Notification
 {
     /**
      * @var array

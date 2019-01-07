@@ -14,7 +14,7 @@ class InfoMessageNotifiable
     /**
      * @param array $payload
      */
-    public static function notify(array $payload)
+    public static function notifyMessage(array $payload)
     {
         $instance = new self();
 
