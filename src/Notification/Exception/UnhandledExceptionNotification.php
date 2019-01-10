@@ -5,19 +5,21 @@ namespace Logistio\Symmetry\Notification\Exception;
 use Logistio\Symmetry\Notification\Exception\Slack\SlackExceptionRenderer;
 use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
-use Logistio\Symmetry\Exception\BaseException;
 
 class UnhandledExceptionNotification extends Notification
 {
-    private $exception;
+    /**
+     * @var UnhandledExceptionNotificationModelInterface
+     */
+    protected $model;
 
     /**
      * UnhandledExceptionNotification constructor.
-     * @param \Exception $exception
+     * @param UnhandledExceptionNotificationModelInterface $model
      */
-    public function __construct(\Exception $exception)
+    public function __construct(UnhandledExceptionNotificationModelInterface $model)
     {
-        $this->exception = $exception;
+        $this->model = $model;
     }
 
     /**
@@ -37,16 +39,17 @@ class UnhandledExceptionNotification extends Notification
      */
     public function toSlack($notifiable)
     {
-        $renderer = new SlackExceptionRenderer($this->exception);
+        $renderer = new SlackExceptionRenderer($this->model);
 
         return $renderer->render();
     }
 
+    /**
+     * @return array
+     */
     public function toArray()
     {
-        if ($this->exception instanceof BaseException) {
-            return $this->exception->toArray();
-        }
+        return $this->model->toArray();
     }
 
 }

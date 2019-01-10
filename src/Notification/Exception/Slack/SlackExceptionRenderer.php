@@ -2,23 +2,17 @@
 
 namespace Logistio\Symmetry\Notification\Exception\Slack;
 
-use Logistio\Symmetry\Service\App\Application;
-use Logistio\Symmetry\Service\Slack\Config\SlackConfig;
-use Illuminate\Notifications\Messages\SlackAttachment;
 use Illuminate\Notifications\Messages\SlackMessage;
-use Logistio\Symmetry\Auth\UserAuthProvider;
+use Illuminate\Notifications\Messages\SlackAttachment;
+use Logistio\Symmetry\Service\Slack\Config\SlackConfig;
+use Logistio\Symmetry\Notification\Exception\UnhandledExceptionNotificationModelInterface;
 
 class SlackExceptionRenderer
 {
     /**
-     * @var  \Exception
+     * @var UnhandledExceptionNotificationModelInterface
      */
-    private $exception;
-
-    /**
-     * @var Application
-     */
-    private $application;
+    protected $model;
 
     /**
      * @var SlackConfig
@@ -27,13 +21,11 @@ class SlackExceptionRenderer
 
     /**
      * SlackExceptionRenderer constructor.
-     * @param \Exception $exception
+     * @param UnhandledExceptionNotificationModelInterface $model
      */
-    public function __construct(\Exception $exception)
+    public function __construct(UnhandledExceptionNotificationModelInterface $model)
     {
-        $this->exception = $exception;
-
-        $this->application = app()->make(Application::class);
+        $this->model = $model;
 
         $this->slackConfig = app()->make(SlackConfig::class);
     }
@@ -50,32 +42,11 @@ class SlackExceptionRenderer
             ->to($this->slackConfig->getExceptionNotificationsChannel())
             ->content("An exception has been thrown.")
             ->attachment(function(SlackAttachment $attachment) {
-                $attachment->fields([
-                    'Message' =>  $this->exception->getMessage(),
-                    'Code'  => $this->exception->getCode(),
-                    'Request' => request()->path(),
-                    'User'  => $this->getUserEmail(),
-                    'File'  => $this->exception->getFile() . " at line " . $this->exception->getLine(),
-                    'Version' => $this->application->getVersion(),
-                ]);
+                $attachment->fields($this->model->toArray());
             })
             ->attachment(function(SlackAttachment $attachment) {
                 $attachment->content($this->exception->getTraceAsString())
                     ->title('Stack Trace');
             });
-    }
-
-    /**
-     * @return null|string
-     */
-    private function getUserEmail()
-    {
-        $user = UserAuthProvider::getAuthUser();
-
-        if ($user) {
-            return $user->email;
-        }
-
-        return null;
     }
 }

@@ -3,6 +3,8 @@
 
 namespace Logistio\Symmetry\Service\Slack\Config;
 
+use Logistio\Symmetry\Notification\Exception\Slack\SlackExceptionPayload;
+
 /**
  * Class SlackConfig
  * @package Logistio\Symmetry\Service\Slack\Config
@@ -75,5 +77,4 @@ class SlackConfig
     {
         return $this->infoNotificationsChannel;
     }
-
 }
