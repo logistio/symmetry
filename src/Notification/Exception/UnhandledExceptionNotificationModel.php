@@ -8,6 +8,8 @@ namespace Logistio\Symmetry\Notification\Exception;
  */
 class UnhandledExceptionNotificationModel implements UnhandledExceptionNotificationModelInterface
 {
+    public $exception;
+
     /**
      * @var string
      */

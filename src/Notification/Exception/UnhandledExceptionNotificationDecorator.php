@@ -30,6 +30,7 @@ class UnhandledExceptionNotificationDecorator implements IUnhandledExceptionNoti
      */
     public function decorate(UnhandledExceptionNotificationModelInterface $model, \Exception $exception)
     {
+        $model->exception = $exception;
         $model->message = $exception->getMessage();
         $model->code = $exception->getCode();
         $model->request = request()->path();

@@ -45,7 +45,7 @@ class SlackExceptionRenderer
                 $attachment->fields($this->model->toArray());
             })
             ->attachment(function(SlackAttachment $attachment) {
-                $attachment->content($this->exception->getTraceAsString())
+                $attachment->content($this->model->exception->getTraceAsString())
                     ->title('Stack Trace');
             });
     }
