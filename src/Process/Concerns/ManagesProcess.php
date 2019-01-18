@@ -35,7 +35,7 @@ trait ManagesProcess
     /**
      * @param $logMessage
      */
-    protected function setProcessAsCompleted($logMessage)
+    protected function setProcessAsCompleted($logMessage = "The process has been completed.")
     {
         $completedState = ProcessState::findByCode(ProcessState::CODE_COMPLETED);
 
