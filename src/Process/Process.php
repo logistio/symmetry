@@ -112,7 +112,13 @@ class Process extends BaseModel
         if ($this->payload) {
             $data = json_decode($this->payload, 'true')['data'];
 
-            return unserialize($data);
+            $unserialized = unserialize($data);
+
+            if ($unserialized === false) {
+                return $data;
+            }
+
+            return $unserialized;
         }
 
         return null;
@@ -120,22 +126,24 @@ class Process extends BaseModel
 
     /**
      * @param $payload
+     * @param bool $serialize
      * @return $this
      */
-    public function setPayload($payload)
+    public function setPayload($payload, $serialize = true)
     {
-        $this->payload = json_encode($this->createPayloadArray($payload));
+        $this->payload = json_encode($this->createPayloadArray($payload, $serialize));
         return $this;
     }
 
     /**
      * @param $payload
+     * @param bool $serialize
      * @return array
      */
-    protected function createPayloadArray($payload)
+    protected function createPayloadArray($payload, $serialize = true)
     {
         return [
-            'data' => serialize($payload)
+            'data' => $serialize ? serialize($payload) : $payload
         ];
     }
 
