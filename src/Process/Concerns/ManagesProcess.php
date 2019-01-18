@@ -17,7 +17,7 @@ trait ManagesProcess
     /**
      * @param $logMessage
      */
-    protected function setInProgressState($logMessage)
+    protected function setInProgressState($logMessage = "The process has started.")
     {
         $inProgressState = ProcessState::findByCode(ProcessState::CODE_IN_PROGRESS);
 
