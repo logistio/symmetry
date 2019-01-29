@@ -144,18 +144,19 @@ trait QueryBuildingUtilities
             return;
         }
 
+        $apiColumnCodeTagsIdx = $this->queryRequest->getApiColumnCodeTagsIdx();
+
         /** @var Filter $filter */
         foreach ($this->queryRequest->getFilters() as $filter) {
 
             /** @var ApiColumnCodeTag $apiColumnTag */
-            $apiColumnTag = array_get($this->apiColumnCodeTagsIdx, $filter->getApiColumnCode());
+            $apiColumnTag = array_get($apiColumnCodeTagsIdx, $filter->getApiColumnCode());
 
             if (is_null($apiColumnTag)) {
                 throw new ValidationException("The api column code `{$apiColumnTag}` is invalid.");
             }
 
             $filter->attachWhereClauseToQueryBuilder($queryBuilder, $this->queryRequest);
-
         }
     }
 }

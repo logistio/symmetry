@@ -3,6 +3,7 @@
 namespace Logistio\Symmetry\Query;
 
 use Logistio\Symmetry\Query\Macro\Util\QueryBuildingUtilities;
+use Logistio\Symmetry\Query\Request\QueryRequest;
 use Logistio\Symmetry\Query\Request\QueryRequestInterface;
 use Logistio\Symmetry\Query\Macro\Util\DbStringSearchTrait;
 use Illuminate\Support\Collection;
@@ -30,7 +31,7 @@ abstract class Query
      * The QueryRequest represents all the options required
      * for executing the Query.
      *
-     * @var QueryRequestInterface
+     * @var QueryRequestInterface|QueryRequest
      */
     protected $queryRequest;
 
