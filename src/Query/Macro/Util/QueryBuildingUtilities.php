@@ -27,14 +27,17 @@ trait QueryBuildingUtilities
      */
     protected function createRawWhereClauseForGlobalSearch($searchableColumn, $searchQueryDecoded)
     {
-        // If the column is a date time column, we require a different search query.
-        if (in_array($searchableColumn, $this->dateTimeColumns)) {
+        $apiColumnCodeTagsIdx = $this->queryRequest->getApiColumnCodeTagsIdx();
+
+        /** @var ApiColumnCodeTag $apiColumnCodeTag */
+        $apiColumnCodeTag = array_get($apiColumnCodeTagsIdx, $searchableColumn);
+
+        if ($apiColumnCodeTag->isTypeDatetime()) {
             return $this->makeGlobalSearchStringForDateTimeColumn($searchableColumn);
         }
-
-        if (in_array($searchableColumn, $this->encodedIdColumns) && $searchQueryDecoded) {
-            return $this->makeStrictGlobalSearchStringComparison($searchableColumn);
-        }
+//        if (in_array($searchableColumn, $this->encodedIdColumns) && $searchQueryDecoded) {
+//            return $this->makeStrictGlobalSearchStringComparison($searchableColumn);
+//        }
 
         return $this->makeDefaultGlobalSearchStringForColumn($searchableColumn);
     }
