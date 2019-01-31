@@ -21,13 +21,13 @@ class QueryRequest implements QueryRequestInterface
     /**
      * @var ColumnOrder[]
      */
-    protected $columnOrdering;
+    protected $columnOrdering = [];
 
     /**
      * @var array - A list of columns names in the result data set
      * which can be searched.
      */
-    protected $searchableColumns;
+    protected $searchableColumns = [];
 
     /**
      * @var string - The search query to apply to the list
