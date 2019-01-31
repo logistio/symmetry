@@ -371,8 +371,8 @@ class QueryRequestDecorator
                 throw new ValidationException("Invalid date range at index {$index}. The element must be a date range object.");
             }
 
-            $dateFromInput = array_get($dateRangesInput, 'date_from');
-            $dateToInput = array_get($dateRangesInput, 'date_to');
+            $dateFromInput = array_get($dateRangeInput, 'date_from');
+            $dateToInput = array_get($dateRangeInput, 'date_to');
 
             if (!$dateFromInput) {
                 throw new ValidationException("Invalid date range at index {$index}. The `date_from` property is not set.");
