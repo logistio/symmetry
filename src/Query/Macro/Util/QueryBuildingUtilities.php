@@ -89,7 +89,9 @@ trait QueryBuildingUtilities
 
         $searchableColumns = $this->queryRequest->getSearchableColumns();
 
-        $queryBuilder->where(function($query) use ($searchQuery, $searchableColumns) {
+        $apiColumnCodeTagsIdx = $this->queryRequest->getApiColumnCodeTagsIdx();
+
+        $queryBuilder->where(function($query) use ($searchQuery, $searchableColumns, $apiColumnCodeTagsIdx) {
 
             foreach ($searchableColumns as $searchableColumn) {
 
@@ -99,7 +101,7 @@ trait QueryBuildingUtilities
                 // $globalSearchableColumnsMap
 
                 /** @var ApiColumnCodeTag $apiCodeTag */
-                $apiCodeTag = array_get($this->apiColumnCodeTagsIdx, $searchableColumn);
+                $apiCodeTag = array_get($apiColumnCodeTagsIdx, $searchableColumn);
 
                 if (!$apiCodeTag) {
                     throw new ValidationException("The api column code `{$searchableColumn}` is invalid.");
