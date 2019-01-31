@@ -84,6 +84,7 @@ abstract class BaseTimeScopeAggregator
             static::SCOPE_MONTH,
             static::SCOPE_QUARTER,
             static::SCOPE_YEAR,
+            static::SCOPE_MULTI_PERIOD,
             static::SCOPE_ALL
         ];
     }
