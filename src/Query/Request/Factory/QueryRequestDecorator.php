@@ -352,6 +352,10 @@ class QueryRequestDecorator
         $dateRangesInput = array_get($this->input, 'date_ranges', null);
 
         if (!$dateRangesInput) {
+            if ($queryRequest->getAggregationPeriodScope() == BaseTimeScopeAggregator::SCOPE_MULTI_PERIOD) {
+                throw new ValidationException("The `date_ranges` array is required for aggregation scope `MULTI_PERIOD`.");
+            }
+
             return;
         }
 
