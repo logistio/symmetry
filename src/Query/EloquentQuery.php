@@ -21,6 +21,7 @@ abstract class EloquentQuery extends Query
     protected $queryBuilder;
 
     /**
+     * @deprecated
      * @var array
      */
     protected $dateTimeColumns = [
@@ -28,6 +29,7 @@ abstract class EloquentQuery extends Query
     ];
 
     /**
+     * @deprecated
      * @var array
      */
     protected $apiColumnCodes = [
@@ -35,6 +37,7 @@ abstract class EloquentQuery extends Query
     ];
 
     /**
+     * @deprecated
      * @var array
      */
     protected $encodedIdColumns = [
