@@ -14,6 +14,11 @@ use Logistio\Symmetry\Util\Time\DateRange;
 class QueryRequest implements QueryRequestInterface
 {
     /**
+     * @var array|DateRange[]
+     */
+    public $dateRanges;
+
+    /**
      * @var int
      */
     protected $pageLength;
@@ -77,7 +82,8 @@ class QueryRequest implements QueryRequestInterface
     /**
      * @var Carbon
      */
-    protected $dateTo;
+    protected  $dateTo;
+
 
     /**
      * @return Carbon
