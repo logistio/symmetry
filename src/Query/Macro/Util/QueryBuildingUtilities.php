@@ -21,25 +21,19 @@ trait QueryBuildingUtilities
     }
 
     /**
-     * @param $searchableColumn
-     * @param $searchQueryDecoded
+     * @param ApiColumnCodeTag $apiColumnCodeTag
      * @return string
      */
-    protected function createRawWhereClauseForGlobalSearch($searchableColumn, $searchQueryDecoded)
+    protected function createRawWhereClauseForGlobalSearch(ApiColumnCodeTag $apiColumnCodeTag)
     {
-        $apiColumnCodeTagsIdx = $this->queryRequest->getApiColumnCodeTagsIdx();
-
-        /** @var ApiColumnCodeTag $apiColumnCodeTag */
-        $apiColumnCodeTag = array_get($apiColumnCodeTagsIdx, $searchableColumn);
-
         if ($apiColumnCodeTag->isTypeDatetime()) {
-            return $this->makeGlobalSearchStringForDateTimeColumn($searchableColumn);
+            return $this->makeGlobalSearchStringForDateTimeColumn($apiColumnCodeTag->getDatabaseColumn());
         }
 //        if (in_array($searchableColumn, $this->encodedIdColumns) && $searchQueryDecoded) {
 //            return $this->makeStrictGlobalSearchStringComparison($searchableColumn);
 //        }
 
-        return $this->makeDefaultGlobalSearchStringForColumn($searchableColumn);
+        return $this->makeDefaultGlobalSearchStringForColumn($apiColumnCodeTag->getDatabaseColumn());
     }
 
     /**
@@ -110,20 +104,11 @@ trait QueryBuildingUtilities
                     throw new ValidationException("The api column code `{$searchableColumn}` is invalid.");
                 }
 
-                $columnName = $apiCodeTag->getDatabaseColumn();
+                $whereRaw = $this->createRawWhereClauseForGlobalSearch($apiCodeTag);
 
-                $whereRaw = $this->createRawWhereClauseForGlobalSearch($columnName, $searchQuery);
-
-                if (in_array($columnName, $this->encodedIdColumns) && $searchQuery) {
-                    $query->orWhereRaw($whereRaw, [
-                        $this->escapeQueryToken($searchQuery, false)
-                    ]);
-                }
-                else {
-                    $query->orWhereRaw($whereRaw, [
-                        $this->escapeQueryToken($searchQuery)
-                    ]);
-                }
+                $query->orWhereRaw($whereRaw, [
+                    $this->escapeQueryToken($searchQuery)
+                ]);
             }
         });
     }
