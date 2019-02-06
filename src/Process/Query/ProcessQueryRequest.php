@@ -20,10 +20,10 @@ class ProcessQueryRequest extends QueryRequest
     public static function make(array $requestData)
     {
         $request = new self();
-
-        $apiColumnCodeTagsArray = ProcessApiColumnCodeConfig::$config;
-
-        $request->setApiColumnCodeTags(ApiColumnCodeTag::makeFromArray($apiColumnCodeTagsArray));
+//
+//        $apiColumnCodeTagsArray = ProcessApiColumnCodeConfig::$config;
+//
+//        $request->setApiColumnCodeTags(ApiColumnCodeTag::makeFromArray($apiColumnCodeTagsArray));
 
         $decorator = new ProcessQueryRequestDecorator();
 

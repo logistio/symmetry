@@ -14,6 +14,11 @@ use Logistio\Symmetry\Util\Time\DateRange;
 class QueryRequest implements QueryRequestInterface
 {
     /**
+     * @var array|DateRange[]
+     */
+    public $dateRanges;
+
+    /**
      * @var int
      */
     protected $pageLength;
@@ -21,13 +26,13 @@ class QueryRequest implements QueryRequestInterface
     /**
      * @var ColumnOrder[]
      */
-    protected $columnOrdering;
+    protected $columnOrdering = [];
 
     /**
      * @var array - A list of columns names in the result data set
      * which can be searched.
      */
-    protected $searchableColumns;
+    protected $searchableColumns = [];
 
     /**
      * @var string - The search query to apply to the list
@@ -77,7 +82,8 @@ class QueryRequest implements QueryRequestInterface
     /**
      * @var Carbon
      */
-    protected $dateTo;
+    protected  $dateTo;
+
 
     /**
      * @return Carbon
@@ -160,6 +166,20 @@ class QueryRequest implements QueryRequestInterface
     public function setColumnOrdering($columnOrdering)
     {
         $this->columnOrdering = $columnOrdering;
+    }
+
+    /**
+     * @return array
+     */
+    public function getDbColumnsToOrderBy()
+    {
+        $columnOrdering = $this->getColumnOrdering();
+
+        if (!$columnOrdering) {
+            return [];
+        }
+
+        return collect($columnOrdering)->pluck('columnName')->toArray();
     }
 
     /**

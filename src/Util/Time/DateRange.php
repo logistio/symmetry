@@ -4,6 +4,7 @@ namespace Logistio\Symmetry\Util\Time;
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Arrayable;
+use Logistio\Symmetry\Util\ObjectUtil;
 
 class DateRange implements Arrayable
 {
@@ -163,41 +164,67 @@ class DateRange implements Arrayable
      */
     public function segmentToTupleCollectionForPeriod($period)
     {
-        $tuples = [];
+        $tupleSegments = [];
 
-        $cursor = $this->dateFrom->copy();
+        $curDateFrom = $this->dateFrom->copy();
 
-        while ($cursor->lte($this->dateTo)) {
+        while ($curDateFrom->lte($this->dateTo)) {
 
             if ($period == static::$PERIOD_DAYS) {
-                $tuples[] = [
-                    $cursor->copy(),
-                    $cursor->copy()
+                $tupleSegments[] = [
+                    $curDateFrom->copy(),
+                    $curDateFrom->copy()
                 ];
 
-                $cursor->addDay();
+                $curDateFrom->addDay();
 
                 continue;
             }
 
-            $tuple = [$cursor->copy()];
+            $segmentFromTo = [$curDateFrom->copy()];
 
-            $this->incrementBy($cursor, $period);
+            $curDateTo = $curDateFrom->copy();
+            $this->incrementBy($curDateTo, $period);
 
-            if ($cursor->gt($this->dateTo)) {
+            if ($curDateTo->gt($this->dateTo)) {
+                // This tuple would finish later than the speicified dateTo.
+                // We only include tuples in the output range that fill an entire period.
                 break;
             }
 
-            $tuple[] = $cursor->copy();
+            $segmentFromTo[] = $curDateTo->copy();
 
-            $tuples[] = $tuple;
+            $tupleSegments[] = $segmentFromTo;
 
-            if ($period != static::$PERIOD_YEARS) {
-                $cursor->addDay();
+            if ($period == static::$PERIOD_MONTHS) {
+                /*
+                 * [2019-02-06 PTS]
+                 * According to the DateRangeTest, the expected behaviour
+                 * is for Month ranges to start at the beginning of the month
+                 * and end at the end of the month.
+                 * Other range should produce half-open intervals, where consumers
+                 * of those ranges would presumably treat the "from" date
+                 * as included, and the "to" date as excluded.
+                 *
+                 * It seems that expected behaviour for month ranges is to
+                 * create a range where the "from" date in each segment is the
+                 *  first day in the calendar month, and the "to" date is the
+                 * last day of that calendar month.
+                 * This inconsistency is confusing, but we must investigate
+                 * the impact of changing this behaviour before making any
+                 * changes here.
+                 */
+
+                $nextDateFrom = $curDateTo->copy()->addDay();
             }
+            else {
+                $nextDateFrom = $curDateTo;
+            }
+
+            $curDateFrom = $nextDateFrom;
         }
 
-        return $tuples;
+        return $tupleSegments;
     }
 
     private function incrementBy(Carbon $carbonToIncrement, $period)
@@ -214,7 +241,7 @@ class DateRange implements Arrayable
                 break;
             }
             case static::$PERIOD_WEEKS: {
-                $carbonToIncrement->addDay(6);
+                $carbonToIncrement->addDay(7);
                 break;
             }
             case static::$PERIOD_DAYS: {

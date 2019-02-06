@@ -3,6 +3,8 @@
 
 namespace Logistio\Symmetry\Service\Slack\Config;
 
+use Logistio\Symmetry\Notification\Exception\Slack\SlackExceptionPayload;
+
 /**
  * Class SlackConfig
  * @package Logistio\Symmetry\Service\Slack\Config
@@ -25,6 +27,11 @@ class SlackConfig
     private $exceptionNotificationsChannel;
 
     /**
+     * @var string
+     */
+    private $infoNotificationsChannel;
+
+    /**
      * SlackConfig constructor.
      * @param array $config
      */
@@ -35,6 +42,8 @@ class SlackConfig
         $this->exceptionNotificationsEnabled = $config['notifications']['exception']['enabled'];
 
         $this->exceptionNotificationsChannel = $config['notifications']['exception']['channel'];
+
+        $this->infoNotificationsChannel = $config['notifications']['info']['channel'];
     }
 
     /**
@@ -61,4 +70,11 @@ class SlackConfig
         return $this->exceptionNotificationsChannel;
     }
 
+    /**
+     * @return string
+     */
+    public function getInfoNotificationsChannel()
+    {
+        return $this->infoNotificationsChannel;
+    }
 }

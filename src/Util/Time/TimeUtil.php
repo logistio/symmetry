@@ -120,6 +120,23 @@ class TimeUtil
     }
 
     /**
+     * @param $dbIntegerTime
+     * @return Carbon
+     */
+    public static function dbIntegerTimeToCarbonTime($dbIntegerTime)
+    {
+        if (!is_numeric($dbIntegerTime)) {
+            throw new \InvalidArgumentException("The input must be numeric.");
+        }
+
+        $dbIntegerTime = strval($dbIntegerTime);
+
+        $dbIntegerTime = str_pad($dbIntegerTime, 6, "0", STR_PAD_LEFT);
+
+        return Carbon::createFromFormat('His', $dbIntegerTime, self::getDBTimezone());
+    }
+
+    /**
      * @param $dbIntegerDateTime
      * @return Carbon
      */

@@ -12,6 +12,7 @@ abstract class BaseTimeScopeAggregator
     const SCOPE_MONTH = 'MONTH';
     const SCOPE_QUARTER = 'QUARTER';
     const SCOPE_YEAR = 'YEAR';
+    const SCOPE_MULTI_PERIOD = 'MULTI_PERIOD';
     const SCOPE_ALL = 'ALL';
 
     protected $selectStatementScopeAliasesMap = [
@@ -83,6 +84,7 @@ abstract class BaseTimeScopeAggregator
             static::SCOPE_MONTH,
             static::SCOPE_QUARTER,
             static::SCOPE_YEAR,
+            static::SCOPE_MULTI_PERIOD,
             static::SCOPE_ALL
         ];
     }

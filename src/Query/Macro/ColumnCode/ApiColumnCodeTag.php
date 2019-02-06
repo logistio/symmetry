@@ -16,6 +16,8 @@ class ApiColumnCodeTag
     const TYPE_STRING = 'STRING';
     const TYPE_NUMBER = 'NUMBER';
     const TYPE_DATETIME = 'DATETIME';
+    const TYPE_DATE = 'DATE';
+    const TYPE_TIME = 'TIME';
 
     private $type;
 
@@ -139,5 +141,21 @@ class ApiColumnCodeTag
     public function isTypeDatetime()
     {
         return static::TYPE_DATETIME == $this->getType();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTypeDate()
+    {
+        return static::TYPE_DATE == $this->getType();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isTypeTime()
+    {
+        return static::TYPE_TIME == $this->getType();
     }
 }

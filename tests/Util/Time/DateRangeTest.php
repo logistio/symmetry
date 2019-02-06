@@ -66,26 +66,6 @@ class DateRangeTest extends TestCase
         // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
         $dateRange = new DateRange(
-            TimeUtil::paramDateToCarbon('2018-01-01'),
-            TimeUtil::paramDateToCarbon('2018-01-14')
-        );
-
-        $segments = collect($dateRange->segmentToWeeksTupleCollection());
-
-        $nth = $segments[0];
-
-        $this->assertEquals('2018-01-01', $nth[0]->toDateString());
-        $this->assertEquals('2018-01-07', $nth[1]->toDateString());
-
-        $nth = $segments[1];
-
-        $this->assertEquals('2018-01-08', $nth[0]->toDateString());
-        $this->assertEquals('2018-01-14', $nth[1]->toDateString());
-
-        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-        // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
-        $dateRange = new DateRange(
             TimeUtil::paramDateToCarbon('2016-01-01'),
             TimeUtil::paramDateToCarbon('2018-01-01')
         );
@@ -108,6 +88,33 @@ class DateRangeTest extends TestCase
 //        }
 //
 //        dd("");
+    }
+
+    /**
+     * @test
+     */
+    public function testSegmentToWeeksTupleCollection()
+    {
+        // Create a DateRange that extends a few days beyond two weeks:
+        $dateRange = new DateRange(
+            TimeUtil::paramDateToCarbon('2018-01-01'),
+            TimeUtil::paramDateToCarbon('2018-01-19')
+        );
+
+        $segments = collect($dateRange->segmentToWeeksTupleCollection());
+
+        self::assertEquals(2, $segments->count(), "Expected the range to be broken up into two 1-week segments");
+
+        $nth = $segments[0];
+
+        $this->assertEquals('2018-01-01', $nth[0]->toDateString());
+        $this->assertEquals('2018-01-08', $nth[1]->toDateString());
+
+        $nth = $segments[1];
+
+        $this->assertEquals('2018-01-08', $nth[0]->toDateString());
+        $this->assertEquals('2018-01-15', $nth[1]->toDateString());
+
     }
 
 

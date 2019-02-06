@@ -17,6 +17,12 @@ use Logistio\Symmetry\Test\TestCase;
 class PublicIdManagerTest extends TestCase
 {
 
+    protected function setUp()
+    {
+        parent::setUp();
+        PublicIdManager::reset();
+    }
+
     /**
      * @test
      */

@@ -13,6 +13,7 @@ use Logistio\Symmetry\Query\Predicate\Factory\PredicateFactory;
 use Logistio\Symmetry\Query\Request\Order\ColumnOrder;
 use Logistio\Symmetry\Query\Request\QueryRequest;
 use Logistio\Symmetry\Query\Request\QueryRequestInterface;
+use Logistio\Symmetry\Util\Time\DateRange;
 use Logistio\Symmetry\Util\Time\TimeUtil;
 
 /**
@@ -84,6 +85,8 @@ class QueryRequestDecorator
         $this->setFilters($queryRequest);
 
         $this->setDateRange($queryRequest);
+
+        $this->setDateRanges($queryRequest);
     }
 
     /**
@@ -334,6 +337,67 @@ class QueryRequestDecorator
         $queryRequest->setDateFrom($dateFrom);
 
         $queryRequest->setDateTo($dateTo);
+    }
+
+    /**
+     * If the client provides a collection of date ranges,
+     * set them to the query request.
+     * (Mostly used with the `MULTI_PERIOD` aggregation scope.)
+     *
+     * @param QueryRequestInterface|QueryRequest $queryRequest
+     * @throws ValidationException
+     */
+    protected function setDateRanges(QueryRequestInterface $queryRequest)
+    {
+        $dateRangesInput = array_get($this->input, 'date_ranges', null);
+
+        if (!$dateRangesInput) {
+            if ($queryRequest->getAggregationPeriodScope() == BaseTimeScopeAggregator::SCOPE_MULTI_PERIOD) {
+                throw new ValidationException("The `date_ranges` array is required for aggregation scope `MULTI_PERIOD`.");
+            }
+
+            return;
+        }
+
+        if (!is_array($dateRangesInput)) {
+            throw new ValidationException("The `date_ranges` property must be an array of date ranges.");
+        }
+
+        $dateRanges = [];
+
+        foreach ($dateRangesInput as $index => $dateRangeInput) {
+
+            if (!is_array($dateRangesInput)) {
+                throw new ValidationException("Invalid date range at index {$index}. The element must be a date range object.");
+            }
+
+            $dateFromInput = array_get($dateRangeInput, 'date_from');
+            $dateToInput = array_get($dateRangeInput, 'date_to');
+
+            if (!$dateFromInput) {
+                throw new ValidationException("Invalid date range at index {$index}. The `date_from` property is not set.");
+            }
+
+            if (!$dateToInput) {
+                throw new ValidationException("Invalid date range at index {$index}. The `date_to` property is not set.");
+            }
+
+            $dateFrom = TimeUtil::paramDateToCarbon($dateFromInput);
+            $dateTo = TimeUtil::paramDateToCarbon($dateToInput);
+
+            if (!TimeUtil::areSequential($dateFrom, $dateTo)) {
+                throw new ValidationException("Invalid date range at index {$index}. The `date_from` property must be less than or equal to the `date_to` property.");
+            }
+
+            $dateRange = new DateRange(
+                $dateFrom,
+                $dateTo
+            );
+
+            $dateRanges[] = $dateRange;
+        }
+
+        $queryRequest->dateRanges = $dateRanges;
     }
 
     /**

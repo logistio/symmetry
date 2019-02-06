@@ -5,6 +5,7 @@ namespace Logistio\Symmetry\PublicId;
 
 
 use Hashids\Hashids;
+use function Sodium\crypto_box_seal_open;
 
 
 /**
@@ -21,6 +22,15 @@ class PublicIdManager
      * @var PublicIdConverter
      */
     private static $globalPubIdConverter;
+
+
+    /**
+     * Resets the global configuration of the PublicIdManager.
+     */
+    public static function reset()
+    {
+        self::$globalPubIdConverter = null;
+    }
 
     /**
      * @return PublicIdConverter

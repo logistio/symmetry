@@ -80,10 +80,9 @@ class CorsService
     public function setCorsResponseHeaders($response, Request $request)
     {
         $response->headers->set('Access-Control-Allow-Credentials', true);
-        $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->headers->set('Access-Control-Allow-Origin', $request->headers->get('Origin'));
         $response->headers->set('Access-Control-Max-Age', '0');
         $response->headers->set('Access-Control-Allow-Methods', '*');
-
 
         $response->headers->set('Access-Control-Expose-Headers', implode(',', [
             'Content-Disposition'

@@ -10,21 +10,21 @@ class UnhandledExceptionNotifiable
     use Notifiable;
 
     /**
-     * @param \Exception $e
+     * @param UnhandledExceptionNotificationModelInterface $model
      */
-    public static function notifyException(\Exception $e)
+    public static function notifyException(UnhandledExceptionNotificationModelInterface $model)
     {
         $instance = new self();
 
-        return $instance->sendExceptionNotification($e);
+        return $instance->sendExceptionNotification($model);
     }
 
     /**
-     * @param \Exception $e
+     * @param UnhandledExceptionNotificationModelInterface $model
      */
-    public function sendExceptionNotification(\Exception $e)
+    public function sendExceptionNotification(UnhandledExceptionNotificationModelInterface $model)
     {
-        $this->notify((new UnhandledExceptionNotification($e)));
+        $this->notify((new UnhandledExceptionNotification($model)));
     }
 
     public function routeNotificationForSlack()
