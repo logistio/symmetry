@@ -82,7 +82,7 @@ class TimeUtil
      *
      * @return string
      */
-    public static function todatAsCalendarDate()
+    public static function todayAsCalendarDate()
     {
         return TimeUtil::fromCarbonToDate(TimeUtil::today());
     }

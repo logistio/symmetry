@@ -1,6 +1,13 @@
 VERSION HISTORY
 -----
 
+
+2019-02-06 WED:
+[PTS]
+- v0.13.1:
+    - Fixed typo: TimeUtil::todatAsCalendarDate to  'todayAsCalendarDate'.
+
+
 2019-02-06 WED:
 [PTS]
 - v0.13.0:
