@@ -7,8 +7,10 @@ use Logistio\Symmetry\Exception\BaseException;
 use Logistio\Symmetry\Exception\HttpableException;
 
 /**
- * Class InvalidCredentialsException
- * @package SquareRoute\Exception
+ * InvalidCredentialsException
+ * ----
+ *
+ *
  */
 class InvalidCredentialsException extends BaseException implements HttpableException
 {

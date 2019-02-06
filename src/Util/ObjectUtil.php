@@ -16,7 +16,6 @@ namespace Logistio\Symmetry\Util;
  *
  * This is meant to provide functionality roughly analogous to Java's `java.util.Objects` class.
  *
- * @package SquareRoute\Util
  */
 class ObjectUtil
 {

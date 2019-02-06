@@ -42,16 +42,18 @@ abstract class BaseMockSeeder
     /**
      * @param $seedConfig
      * @param $paramName
-     * @param Callable_|mixed $defaultValue
+     * @param Callable_|mixed|null $defaultValue
      *      The default value to use, or a callback to be invoked
      *      to create the default value.
      * @return mixed
      */
-    protected function extractParam($seedConfig, $paramName, $defaultValue)
+    protected function extractParam($seedConfig, $paramName, $defaultValue = null)
     {
         if (isset($seedConfig[$paramName])) {
             return $seedConfig[$paramName];
-
+        }
+        else if(is_null($defaultValue)) {
+            return null;
         }
         else if(is_string($defaultValue)) {
             return $defaultValue;

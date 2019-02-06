@@ -2,7 +2,6 @@
 
 namespace Logistio\Symmetry\Auth;
 
-use iCabbi\Insights\Database\Models\User;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Support\Facades\DB;
 
@@ -33,6 +32,9 @@ class UserAuthProvider
      */
     public static function setNextUser($user, $isResetAfterNextRetrieval = false)
     {
+        // TODO: Use the Passport "actingAs" function instead of overrideUser.
+        // See: https://laravel.com/docs/5.7/passport#testing
+
         self::$overrideUser = $user;
         self::$isResetAfterGetUser = $isResetAfterNextRetrieval;
     }

@@ -6,7 +6,8 @@ namespace Logistio\Symmetry\PublicId;
 
 
 use Hashids\Hashids;
-use App\Exceptions\ApiException;
+use Logistio\Symmetry\Exception\BaseException;
+use Logistio\Symmetry\Exception\FlaggedExceptionFactory;
 
 class PublicIdConverter
 {
@@ -51,23 +52,24 @@ class PublicIdConverter
      * value is not a Public Id.
      *
      * @param $idValue
-     * @return mixed
      *
-     * @throws ApiException if the given $idValue has the wrong format, and cannot be decoded.
+     * @return int
+     *
+     * @throws BaseException if the given $idValue has the wrong format, and cannot be decoded.
      */
     public function decode($idValue)
     {
         $hashIdValues = $this->hashIds->decode($idValue);
-        if(isset($hashIdValues[0])) {
+
+        if (isset($hashIdValues[0])) {
             return $hashIdValues[0];
-        }
-        else {
-            throw ApiException::createWithCodeMessageFlag(400, 'Invlaid id value.', 'INVALID_ID');
+        } else {
+            throw FlaggedExceptionFactory::createWithMessageAndFlag('Invlaid id value.', 'INVALID_ID');
         }
     }
 
     /**
-     * Decods a Public Id non-strictly.
+     * Decodes a Public Id non-strictly.
      *
      * If a database ID is given instead of a public ID, then this
      * method will detect that and return the given idValue instead

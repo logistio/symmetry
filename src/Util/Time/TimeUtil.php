@@ -78,11 +78,21 @@ class TimeUtil
     }
 
     /**
+     * Today's date as "YYYY-mm-DD", e.g. "1999-12-30".
+     *
+     * @return string
+     */
+    public static function todatAsCalendarDate()
+    {
+        return TimeUtil::fromCarbonToDate(TimeUtil::today());
+    }
+
+    /**
      * Get the Database Timezone
      *
      * @return string
      */
-    public static function getDBTimezone()
+    public static function getDbTimezone()
     {
         return 'UTC';
     }
@@ -95,7 +105,7 @@ class TimeUtil
      */
     public static function dbDateToCarbonDate($dbDateString)
     {
-        return Carbon::createFromFormat('Y-m-d', $dbDateString, self::getDBTimezone())
+        return Carbon::createFromFormat('Y-m-d', $dbDateString, self::getDbTimezone())
             ->setTime(0, 0, 0);
     }
 
@@ -105,17 +115,17 @@ class TimeUtil
      */
     public static function dbIntegerDateToCarbonDate($dbIntegerDate)
     {
-        return Carbon::createFromFormat('Ymd', $dbIntegerDate, self::getDBTimezone())
+        return Carbon::createFromFormat('Ymd', $dbIntegerDate, self::getDbTimezone())
             ->setTime(0, 0, 0);
     }
 
     /**
      * @param $dbIntegerDateTime
-     * @return static
+     * @return Carbon
      */
     public static function dbIntegerDateTimeToCarbon($dbIntegerDateTime)
     {
-        return Carbon::createFromFormat('Ymd His', $dbIntegerDateTime, self::getDBTimezone());
+        return Carbon::createFromFormat('Ymd His', $dbIntegerDateTime, self::getDbTimezone());
     }
 
     /**
@@ -125,19 +135,19 @@ class TimeUtil
      */
     public static function dbDateTimeToCarbon($dbDateTimeString)
     {
-        return Carbon::createFromFormat('Y-m-d H:i:s', $dbDateTimeString, self::getDBTimezone());
+        return Carbon::createFromFormat('Y-m-d H:i:s', $dbDateTimeString, self::getDbTimezone());
     }
 
     /**
      *
      * @param $paramDate
-     * @return false|static
-     * @throws \Exception
+     *
+     * @return Carbon
      */
     public static function paramDateToCarbon($paramDate)
     {
         try {
-            return Carbon::createFromFormat('Y-m-d', $paramDate, self::getDBTimezone())
+            return Carbon::createFromFormat('Y-m-d', $paramDate, self::getDbTimezone())
                 ->setTime(0, 0, 0);
 
         } catch (\Exception $e) {
@@ -146,7 +156,7 @@ class TimeUtil
     }
 
     /**
-     * SquareRoute Applications expect an external Date Time input to
+     * Client applications expect an external Date Time input to
      * be in then ISO8601 format - (YYYY-MM-DD HH:MM:SS in UTC).
      * The client is responsible for the datetime
      * format and the implied UTC timezone.
@@ -158,7 +168,7 @@ class TimeUtil
     public static function paramDateTimeToCarbon($datetime)
     {
         try {
-            return Carbon::createFromFormat('Y-m-d H:i:s', $datetime, self::getDBTimezone());
+            return Carbon::createFromFormat('Y-m-d H:i:s', $datetime, self::getDbTimezone());
         } catch (\Exception $e) {
             throw new \Exception("The datetime must be in YYYY-MM-DD HH:mm:ss format (e.g. `1999-12-31 18:30:45`). Received: " . self::paramToString($datetime));
         }
@@ -181,8 +191,8 @@ class TimeUtil
 
     /**
      * @param string $date
-     * @return false|TimeUtil
-     * @throws \Exception
+     *
+     * @return Carbon|\DateTime
      */
     public static function apiDateToCarbon($date)
     {
@@ -197,6 +207,25 @@ class TimeUtil
     public static function areSequential(Carbon $start, Carbon $end)
     {
         return $start->lte($end);
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | CONVERT FROM CARBON
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Convert DateTime object to a Calendar date, in format "Y-m-d".
+     * e.g. "1980-07-14"
+     *
+     * @param Carbon|\DateTime $carbonDate
+     * @return string
+     */
+    public static function fromCarbonToDate($carbonDate)
+    {
+        return $carbonDate->format('Y-m-d');
     }
 
     /**
@@ -229,7 +258,7 @@ class TimeUtil
 
         $cursor->addYear();
 
-        while($cursor->lte($dateTo)) {
+        while ($cursor->lte($dateTo)) {
             $dates[] = $cursor->copy();
         }
 

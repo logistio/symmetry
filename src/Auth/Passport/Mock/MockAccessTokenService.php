@@ -4,10 +4,14 @@
 
 namespace Logistio\Symmetry\Auth\Passport\Mock;
 
+use Carbon\Carbon;
+use function Couchbase\defaultDecoder;
+use DateTime;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
+use League\OAuth2\Server\Exception\OAuthServerException;
 use Logistio\Symmetry\Auth\Passport\AccessToken;
 use Logistio\Symmetry\Auth\Passport\AccessTokenRequest;
 use Logistio\Symmetry\Auth\Passport\AccessTokenServiceInterface;
@@ -17,6 +21,7 @@ use Laravel\Passport\Bridge\ClientRepository;
 use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Grant\PasswordGrant;
 use League\OAuth2\Server\Repositories\ClientRepositoryInterface;
+use Logistio\Symmetry\Auth\Passport\PasswordGrantAccessTokenRequest;
 use Psr\Http\Message\RequestInterface;
 
 /**
@@ -57,6 +62,11 @@ class MockAccessTokenService implements AccessTokenServiceInterface
     private $mockHandler;
 
     /**
+     * @var \Illuminate\Foundation\Application|mixed
+     */
+    private $app;
+
+    /**
      * AccessTokenMockService constructor.
      */
     public function __construct()
@@ -65,17 +75,25 @@ class MockAccessTokenService implements AccessTokenServiceInterface
         $this->app = app();
     }
 
-
     public function getToken(AccessTokenRequest $accessTokenRequest)
     {
-        $this->lastAccessTokenRequest = $accessTokenRequest;
 
-        $data = $accessTokenRequest->toArray();
+        if (false) {
+            $this->lastAccessTokenRequest = $accessTokenRequest;
 
-        $result = $this->postJson(self::URI, $data);
+            $data = $accessTokenRequest->toArray();
 
-        $resultContent = $result->getContent();
-        $resultJson = json_decode($resultContent);
+            // Make a real API request.
+            $result = $this->postJson(self::URI, $data);
+            $resultContent = $result->getContent();
+            $resultJson = json_decode($resultContent);
+        }
+
+        $accessToken = $this->issueAccessToken($accessTokenRequest);
+
+        return $accessToken;
+
+        /*
 
         $accessToken = new AccessToken();
         $accessToken->setAccessToken($resultJson->access_token);
@@ -84,6 +102,7 @@ class MockAccessTokenService implements AccessTokenServiceInterface
         $accessToken->setTokenType($resultJson->token_type);
 
         return $accessToken;
+        */
     }
 
     /**
@@ -93,53 +112,7 @@ class MockAccessTokenService implements AccessTokenServiceInterface
     {
         $this->mockHandler = new MockHandler([
             function ($request, $handlerData) {
-
-                $accessTokenRequest = $this->parseAccessTokenRequest($request);
-
-                $this->lastAccessTokenRequest = $accessTokenRequest;
-
-                $clientId = $this->lastAccessTokenRequest->getClientId();
-                $clientSecret = $this->lastAccessTokenRequest->getClientSecret();
-
-                /**
-                 * @var ClientRepositoryInterface
-                 */
-                $clientRepo = app()->make(ClientRepository::class);
-                $client = $clientRepo->getClientEntity(
-                    $clientId,
-                    'password',
-                    $clientSecret,
-                    true
-                );
-
-                $userId = DB::select('user_id from oauth_clients WHERE id=?;', [$clientId]);
-
-                /**
-                 * @var MockPasswordGrant $passwordGrant
-                 */
-                $passwordGrant = app()->make(MockPasswordGrant::class);
-
-                $accessTokenTTL = \DateInterval::createFromDateString('1 day');
-
-                $finalizedScopes = [];
-
-                // Issue and persist new tokens
-                $accessToken = $passwordGrant->issueAccessToken($accessTokenTTL, $client, $userId, $finalizedScopes);
-                $refreshToken = $passwordGrant->issueRefreshToken($accessToken);
-
-
-                dd([self::class, $accessToken, $refreshToken]);
-
-                /*
-                $headers = [
-                    'Content-Type' => 'application/json'
-                ];
-                return new Response(
-                    $statusCode,
-                    $headers,
-                    json_encode($starfishResponse)
-                );
-                */
+                return $this->interceptAuthTokenRequest($request);
             }
         ]);
 
@@ -149,6 +122,68 @@ class MockAccessTokenService implements AccessTokenServiceInterface
 
     }
 
+    /**
+     * @param PasswordGrantAccessTokenRequest $accessTokenRequest
+     *
+     * @return AccessToken
+     */
+    private function issueAccessToken($accessTokenRequest)
+    {
+        $this->lastAccessTokenRequest = $accessTokenRequest;
+
+        $username = $accessTokenRequest->getUsername();
+        $password = $accessTokenRequest->getPassword();
+        $clientId = $accessTokenRequest->getClientId();
+        $clientSecret = $accessTokenRequest->getClientSecret();
+
+        /**
+         * @var ClientRepositoryInterface $clientRepo
+         */
+        $clientRepo = app()->make(ClientRepository::class);
+
+        $client = $clientRepo->getClientEntity(
+            $clientId,
+            'password',
+            $clientSecret,
+            true
+        );
+
+        $oauthClient = OauthClient::findOrFail($clientId);
+
+        $user = User::findByEmail($username);
+        if ($user == null) {
+            throw OAuthServerException::invalidCredentials();
+        }
+
+        /**
+         * @var MockPasswordGrant $passwordGrant
+         */
+        $passwordGrant = app()->make(MockPasswordGrant::class);
+        $passwordGrant->setUserCredentials($username, $password);
+        $passwordGrant->setupDefaultBindings($this->app);
+
+
+        $validatedUser = $passwordGrant->directValidateUser($username, $password, $oauthClient->toClientEntity());
+
+        $accessTokenTTL = \DateInterval::createFromDateString('1 day');
+
+        $finalizedScopes = [];
+
+        // Issue and persist new tokens
+        $accessToken = $passwordGrant->issueAccessToken($accessTokenTTL, $client, $user->id, $finalizedScopes);
+        $refreshToken = $passwordGrant->issueRefreshToken($accessToken);
+
+        $authCredentials = new AccessToken();
+        $authCredentials->setTokenType(AccessToken::TYPE_BEARER);
+        $authCredentials->setAccessToken($accessToken->getIdentifier());
+
+        $expiresIn = $this->convertDateTimeToExpiresIn($accessToken->getExpiryDateTime());
+        $authCredentials->setExpiresIn($expiresIn);
+
+        $authCredentials->setRefreshToken($refreshToken->getIdentifier());
+
+        return $authCredentials;
+    }
 
     /**
      * @param RequestInterface $guzzleRequest
@@ -162,4 +197,85 @@ class MockAccessTokenService implements AccessTokenServiceInterface
         return json_decode($lastRequestData);
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | DATETIME CONVERSION
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * @param DateTime $expiryDateTime
+     *
+     * @return int The number of seconds between the expiryDateTime and now.
+     */
+    private function convertDateTimeToExpiresIn($expiryDateTime)
+    {
+        $now = new DateTime();
+        return $expiryDateTime->getTimestamp() - $now->getTimestamp();
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | REQUEST INTERCEPTOR
+    |--------------------------------------------------------------------------
+    */
+
+    public function interceptAuthTokenRequest($request)
+    {
+        $accessTokenRequest = $this->parseAccessTokenRequest($request);
+
+
+        /*
+        $this->lastAccessTokenRequest = $accessTokenRequest;
+
+        $clientId = $this->lastAccessTokenRequest->getClientId();
+        $clientSecret = $this->lastAccessTokenRequest->getClientSecret();
+
+
+        /* *
+         * @var ClientRepositoryInterface
+         * /
+        $clientRepo = app()->make(ClientRepository::class);
+        $client = $clientRepo->getClientEntity(
+            $clientId,
+            'password',
+            $clientSecret,
+            true
+        );
+
+        $userId = DB::select('user_id from oauth_clients WHERE id=?;', [$clientId]);
+
+        /**
+         * @var MockPasswordGrant $passwordGrant
+         * /
+        $passwordGrant = app()->make(MockPasswordGrant::class);
+
+        $accessTokenTTL = \DateInterval::createFromDateString('1 day');
+
+        $finalizedScopes = [];
+
+        // Issue and persist new tokens
+        $accessToken = $passwordGrant->issueAccessToken($accessTokenTTL, $client, $userId, $finalizedScopes);
+        $refreshToken = $passwordGrant->issueRefreshToken($accessToken);
+        */
+
+        $accessToken = $this->issueAccessToken($accessTokenRequest);
+
+
+        dd([(self::class . '::' . __FUNCTION__), $accessToken]);
+
+
+        // TODO: Convert to Guzzle Response.
+
+        $headers = [
+            'Content-Type' => 'application/json'
+        ];
+
+        return new Response(
+            $statusCode,
+            $headers,
+            json_encode($starfishResponse)
+        );
+
+    }
 }

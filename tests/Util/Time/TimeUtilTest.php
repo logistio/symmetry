@@ -2,6 +2,7 @@
 
 namespace Logistio\Symmetry\Test\Util\Time;
 
+use Carbon\Carbon;
 use Logistio\Symmetry\Test\TestCase;
 use Logistio\Symmetry\Util\Time\DateRange;
 use Logistio\Symmetry\Util\Time\TimeUtil;
@@ -10,7 +11,7 @@ class TimeUtilTest extends TestCase
 {
     public function test()
     {
-        $this->assertTrue(true);
+        self::assertTrue(true);
     }
 
     /**
@@ -20,19 +21,19 @@ class TimeUtilTest extends TestCase
     {
         $date = TimeUtil::paramDateToCarbon('2018-05-31');
 
-        $this->assertTrue(TimeUtil::isEndOfMonth($date));
+        self::assertTrue(TimeUtil::isEndOfMonth($date));
 
         $date = TimeUtil::paramDateToCarbon('2018-06-30');
 
-        $this->assertTrue(TimeUtil::isEndOfMonth($date));
+        self::assertTrue(TimeUtil::isEndOfMonth($date));
 
         $date = TimeUtil::paramDateToCarbon('2018-02-28');
 
-        $this->assertTrue(TimeUtil::isEndOfMonth($date));
+        self::assertTrue(TimeUtil::isEndOfMonth($date));
 
         $date = TimeUtil::paramDateToCarbon('2018-01-01');
 
-        $this->assertFalse(TimeUtil::isEndOfMonth($date));
+        self::assertFalse(TimeUtil::isEndOfMonth($date));
     }
 
 
@@ -45,27 +46,27 @@ class TimeUtilTest extends TestCase
 
         TimeUtil::addMonth($date);
 
-        $this->assertEquals('2018-06-30', $date->toDateString());
+        self::assertEquals('2018-06-30', $date->toDateString());
 
 
         $date = TimeUtil::paramDateToCarbon('2018-02-28');
 
         TimeUtil::addMonth($date);
 
-        $this->assertEquals('2018-03-31', $date->toDateString());
+        self::assertEquals('2018-03-31', $date->toDateString());
 
 
         $date = TimeUtil::paramDateToCarbon('2018-01-05');
 
         TimeUtil::addMonth($date);
 
-        $this->assertEquals('2018-02-05', $date->toDateString());
+        self::assertEquals('2018-02-05', $date->toDateString());
 
         $date = TimeUtil::paramDateToCarbon('2018-08-01');
 
         TimeUtil::addMonth($date);
 
-        $this->assertEquals('2018-08-31', $date->toDateString());
+        self::assertEquals('2018-08-31', $date->toDateString());
     }
 
     /**
@@ -78,19 +79,34 @@ class TimeUtilTest extends TestCase
 
         TimeUtil::subMonth($date);
 
-        $this->assertEquals('2018-08-01', $date->toDateString());
+        self::assertEquals('2018-08-01', $date->toDateString());
 
         $date = TimeUtil::paramDateToCarbon('2018-08-01');
 
         TimeUtil::subMonth($date);
 
-        $this->assertEquals('2018-07-01', $date->toDateString());
+        self::assertEquals('2018-07-01', $date->toDateString());
 
         $date = TimeUtil::paramDateToCarbon('2018-08-05');
 
         TimeUtil::subMonth($date);
 
-        $this->assertEquals('2018-07-05', $date->toDateString());
+        self::assertEquals('2018-07-05', $date->toDateString());
+    }
+
+    /**
+     * @test
+     */
+    public function testFromCarbonToCalendarDate()
+    {
+        $expectedDate = '2006-09-22';
+        $carbonDate = TimeUtil::apiDateToCarbon('2006-09-22');
+
+        $date = TimeUtil::fromCarbonToDate($carbonDate);
+
+        self::assertEquals($expectedDate, $date);
 
     }
+
+
 }

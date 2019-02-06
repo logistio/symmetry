@@ -50,7 +50,7 @@ trait BaseModelTrait
      * @return \Illuminate\Database\Eloquent\Model|\Illuminate\Database\Eloquent\Collection
      * @throws \Illuminate\Database\Eloquent\ModelNotFoundException
      *
-     * @return \Illuminate\Database\Eloquent\Model|self
+     * @return static|self
      */
     public static function findOrFailByPubId($publicId)
     {

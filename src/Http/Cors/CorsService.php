@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 /**
- * Class CorsService
- * @package SquareRoute\Http\Cors
+ * CorsService
+ * ------------
  *
  * A service to handle CORS requests from clients.
  *

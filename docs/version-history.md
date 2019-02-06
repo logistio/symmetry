@@ -1,6 +1,21 @@
 VERSION HISTORY
 -----
 
+2019-02-06 WED:
+[PTS]
+- v0.12.0:
+    - BREAKING CHANGE
+        - Renamed TimUtil.getDBTimeZone to "TimeUtil.getDbTimezone" 
+            (note the case of "DB" has changed to "Db").
+            
+    - Added fromCarbonToDate to TimeUtil.
+    
+    - Added \Logistio\Symmetry\Exception\FlaggedExceptionFactory
+    
+    - Added tests:
+        - \Logistio\Symmetry\Test\PublicId\PublicIdManagerTest
+        - \Logistio\Symmetry\Test\PublicId\PublicIdConverterTest
+
 
 2018-10-08 MON:
 [PTS]
