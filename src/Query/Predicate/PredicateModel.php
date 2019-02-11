@@ -21,6 +21,11 @@ abstract class PredicateModel
     const TYPE_RANGE = 'RANGE';
     const TYPE_IN = 'IN';
     const TYPE_NOT_IN = 'NOT_IN';
+    const TYPE_LESS_THAN = 'LESS_THAN';
+    const TYPE_LESS_THAN_OR_EQUAL_TO = 'LESS_THAN_OR_EQUAL_TO';
+    const TYPE_GREATER_THAN = 'GREATER_THAN';
+    const TYPE_GREATER_THAN_OR_EQUAL_TO = 'GREATER_THAN_OR_EQUAL_TO';
+
 
     /**
      * @return string
@@ -53,6 +58,10 @@ abstract class PredicateModel
             static::TYPE_RANGE,
             static::TYPE_IN,
             static::TYPE_NOT_IN,
+            static::TYPE_LESS_THAN,
+            static::TYPE_LESS_THAN_OR_EQUAL_TO,
+            static::TYPE_GREATER_THAN,
+            static::TYPE_GREATER_THAN_OR_EQUAL_TO,
         ];
     }
 

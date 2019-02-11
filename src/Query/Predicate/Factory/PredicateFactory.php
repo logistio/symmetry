@@ -3,7 +3,11 @@
 namespace Logistio\Symmetry\Query\Predicate\Factory;
 
 use Logistio\Symmetry\Query\Predicate\Equals;
+use Logistio\Symmetry\Query\Predicate\GreaterThan;
+use Logistio\Symmetry\Query\Predicate\GreaterThanOrEqualTo;
 use Logistio\Symmetry\Query\Predicate\In;
+use Logistio\Symmetry\Query\Predicate\LessThan;
+use Logistio\Symmetry\Query\Predicate\LessThanOrEqualTo;
 use Logistio\Symmetry\Query\Predicate\Max;
 use Logistio\Symmetry\Query\Predicate\Min;
 use Logistio\Symmetry\Query\Predicate\NotEquals;
@@ -66,6 +70,22 @@ class PredicateFactory
 
             case PredicateModel::TYPE_MIN: {
                 return $this->makeForTypeMin($query);
+            }
+
+            case PredicateModel::TYPE_LESS_THAN: {
+                return $this->makeForTypeLessThan($query);
+            }
+
+            case PredicateModel::TYPE_LESS_THAN_OR_EQUAL_TO: {
+                return $this->makeForTypeLessThanOrEqualTo($query);
+            }
+
+            case PredicateModel::TYPE_GREATER_THAN: {
+                return $this->makeForTypeGreaterThan($query);
+            }
+
+            case PredicateModel::TYPE_GREATER_THAN_OR_EQUAL_TO: {
+                return $this->makeForTypeGreaterThanOrEqualTo($query);
             }
 
             case PredicateModel::TYPE_RANGE: {
@@ -162,5 +182,41 @@ class PredicateFactory
     private function makeForTypeNotIn($queries)
     {
         return new NotIn($queries);
+    }
+
+    /**
+     * @param $query
+     * @return LessThan
+     */
+    private function makeForTypeLessThan($query)
+    {
+        return new LessThan($query);
+    }
+
+    /**
+     * @param $query
+     * @return LessThanOrEqualTo
+     */
+    private function makeForTypeLessThanOrEqualTo($query)
+    {
+        return new LessThanOrEqualTo($query);
+    }
+
+    /**
+     * @param $query
+     * @return GreaterThan
+     */
+    private function makeForTypeGreaterThan($query)
+    {
+        return new GreaterThan($query);
+    }
+
+    /**
+     * @param $query
+     * @return GreaterThanOrEqualTo
+     */
+    private function makeForTypeGreaterThanOrEqualTo($query)
+    {
+        return new GreaterThanOrEqualTo($query);
     }
 }
