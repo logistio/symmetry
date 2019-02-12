@@ -56,7 +56,7 @@ class PublicIdManager
      */
     public static function createHashIds(): Hashids
     {
-        return new Hashids(env('PUB_ID_SALT'));
+        return new Hashids(env('PUB_ID_SALT', 'asfj9nCWV0sWqGDFlDLREcK8Wk0gtCjV'), 10);
     }
 
     /**
