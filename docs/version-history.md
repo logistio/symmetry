@@ -2,6 +2,18 @@ VERSION HISTORY
 -----
 
 
+2019-02-12 TUE:
+[PTS]
+- v0.13.2:
+    - Removed references to `OauthClient` and `User` from `MockAccessTokenService`.
+        - These models were introduced by Fleetcore, but refer to the standard 
+            Passport "Client" model (i.e. the "oauth_clients" table) and 
+            the "User" model (which is the "users" table).
+        - Added a very useless test: `MockAccessTokenServiceTest`
+        - Replaced with `AuthEntityRepository` interface
+            - Mocker `MockAuthEntityRepository`
+                
+
 2019-02-06 WED:
 [PTS]
 - v0.13.1:

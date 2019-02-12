@@ -12,6 +12,7 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response;
 use League\OAuth2\Server\Exception\OAuthServerException;
+use Logistio\Symmetry\Auth\AuthEntityRepository;
 use Logistio\Symmetry\Auth\Passport\AccessToken;
 use Logistio\Symmetry\Auth\Passport\AccessTokenRequest;
 use Logistio\Symmetry\Auth\Passport\AccessTokenServiceInterface;
@@ -67,17 +68,27 @@ class MockAccessTokenService implements AccessTokenServiceInterface
     private $app;
 
     /**
-     * AccessTokenMockService constructor.
+     * @var AuthEntityRepository
      */
-    public function __construct()
+    private $authEntityRepo;
+
+    /**
+     * AccessTokenMockService constructor.
+     *
+     * @param AuthEntityRepository $authEntityRepo
+     */
+    public function __construct(AuthEntityRepository $authEntityRepo)
     {
+        $this->authEntityRepo = $authEntityRepo;
+
         // $app is required by MakesHttpRequests.
         $this->app = app();
     }
 
+    // ----------------------------------------------------
+
     public function getToken(AccessTokenRequest $accessTokenRequest)
     {
-
         if (false) {
             $this->lastAccessTokenRequest = $accessTokenRequest;
 
@@ -148,9 +159,9 @@ class MockAccessTokenService implements AccessTokenServiceInterface
             true
         );
 
-        $oauthClient = OauthClient::findOrFail($clientId);
+        $oauthClient = $this->authEntityRepo->findOauthClientOrFail($clientId);
 
-        $user = User::findByEmail($username);
+        $user = $this->authEntityRepo->findUserByEmail($username);
         if ($user == null) {
             throw OAuthServerException::invalidCredentials();
         }
@@ -161,7 +172,6 @@ class MockAccessTokenService implements AccessTokenServiceInterface
         $passwordGrant = app()->make(MockPasswordGrant::class);
         $passwordGrant->setUserCredentials($username, $password);
         $passwordGrant->setupDefaultBindings($this->app);
-
 
         $validatedUser = $passwordGrant->directValidateUser($username, $password, $oauthClient->toClientEntity());
 
