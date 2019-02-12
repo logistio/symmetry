@@ -4,6 +4,10 @@ VERSION HISTORY
 
 2019-02-12 TUE:
 [PTS]
+- v0.13.4:
+    - Added `PassportOauthClient` trait.
+    
+
 - v0.13.3:
     - Added \Logistio\Symmetry\Auth\Passport\Mock\MockAccessTokenServiceBuilder
          for building MockAccessTokenService which will be correctly registered

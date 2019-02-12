@@ -4,6 +4,8 @@
 namespace Logistio\Symmetry\Auth;
 
 
+use Logistio\Symmetry\Auth\Passport\PassportOauthClient;
+
 /**
  * AuthEntityRepository
  * ----
@@ -23,7 +25,7 @@ interface AuthEntityRepository
      * Find an entry from the "oauth_client" table by its "id" value.
      *
      * @param $oauthClientId
-     * @return mixed
+     * @return PassportOauthClient
      */
     public function findOauthClientOrFail($oauthClientId);
 
