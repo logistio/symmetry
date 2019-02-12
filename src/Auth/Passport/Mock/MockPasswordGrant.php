@@ -10,6 +10,7 @@ namespace Logistio\Symmetry\Auth\Passport\Mock;
 
 
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Log;
 use Laravel\Passport\Bridge\AccessTokenRepository;
 use Laravel\Passport\Client;
 use Laravel\Passport\Passport;
@@ -95,7 +96,7 @@ class MockPasswordGrant extends PasswordGrant
             $client
         );
         if ($user instanceof UserEntityInterface === false) {
-            Axe::d("Emit RequestEvent: RequestEvent::USER_AUTHENTICATION_FAILED");
+            Log::debug("Emit RequestEvent: RequestEvent::USER_AUTHENTICATION_FAILED");
 
             // $this->getEmitter()->emit(new RequestEvent(RequestEvent::USER_AUTHENTICATION_FAILED, $request));
 

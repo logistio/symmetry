@@ -4,6 +4,13 @@ VERSION HISTORY
 
 2019-02-12 TUE:
 [PTS]
+- v0.13.3:
+    - Added \Logistio\Symmetry\Auth\Passport\Mock\MockAccessTokenServiceBuilder
+         for building MockAccessTokenService which will be correctly registered
+         with the Laravel service provider.
+    - Removed call to "Axe" class in MockPasswordGrant.
+         
+
 - v0.13.2:
     - Removed references to `OauthClient` and `User` from `MockAccessTokenService`.
         - These models were introduced by Fleetcore, but refer to the standard 
