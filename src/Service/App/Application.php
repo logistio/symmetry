@@ -11,6 +11,8 @@ class Application
     const LOCAL_ENVIRONMENT = 'local';
     const TESTING_ENVIRONMENT = 'testing';
 
+    public $appVersionFilename = 'version.json';
+
     public $sigtermTriggered = false;
 
     /**
@@ -76,15 +78,19 @@ class Application
     }
 
     /**
-     * @return mixed
+     * @return string|null
      */
     public function getVersion()
     {
-        $path = base_path() . "/composer.json";
+        $path = base_path() . "/" . $this->appVersionFilename;
+
+        if (!file_exists($path)) {
+            return null;
+        }
 
         $json = json_decode(file_get_contents($path), true);
 
-        return $json['version'];
+        return array_get($json, 'version', null);
     }
 
     public function assertEnvironmentIsValid()
