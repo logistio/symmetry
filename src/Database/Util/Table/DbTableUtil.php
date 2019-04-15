@@ -18,4 +18,18 @@ class DbTableUtil
     {
         return Schema::hasTable($table);
     }
+
+    /**
+     * @param $indexName
+     * @param $table
+     * @return bool
+     */
+    public static function doesIndexExistOnTable($indexName, $table): bool
+    {
+        $manager = \Schema::getConnection()->getDoctrineSchemaManager();
+
+        $indexesFound = $manager->listTableIndexes($table);
+
+        return array_key_exists($indexName, $indexesFound);
+    }
 }
