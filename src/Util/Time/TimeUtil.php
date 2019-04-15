@@ -251,7 +251,7 @@ class TimeUtil
      */
     public static function fromCarbonToIntegerDate(Carbon $dt)
     {
-        return $dt->format('Ymd');
+           return $dt->format('Ymd');
     }
 
     /**
@@ -396,5 +396,27 @@ class TimeUtil
         $date->startOfMonth();
 
         $date->setTimeFromTimeString($originalTime);
+    }
+
+    /**
+     * Return the duration between the $start and $end
+     * in the format:
+     * [hours, minutes, seconds]
+     *
+     * @param Carbon $start
+     * @param Carbon $end
+     * @return array
+     */
+    public static function durationInHoursFormat(Carbon $start, Carbon $end)
+    {
+        if ($end->lt($start)) {
+            throw new \InvalidArgumentException("The start time cannot be greater than the end time.");
+        }
+
+        return [
+            $end->diffInHours($start), // Hours.
+            $end->diffInMinutes($start) % 60, // Minutes.
+            $end->diffInSeconds($start) % 60, // Seconds.
+        ];
     }
 }
