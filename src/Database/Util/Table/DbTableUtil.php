@@ -20,6 +20,16 @@ class DbTableUtil
     }
 
     /**
+     * @param string $column
+     * @param string $table
+     * @return bool
+     */
+    public static function doesColumnExistOnTable(string $column, string $table): bool
+    {
+        return Schema::hasColumn($table, $column);
+    }
+
+    /**
      * @param $indexName
      * @param $table
      * @return bool
