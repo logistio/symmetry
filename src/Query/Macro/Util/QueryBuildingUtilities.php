@@ -149,4 +149,15 @@ trait QueryBuildingUtilities
             $filter->attachWhereClauseToQueryBuilder($queryBuilder, $this->queryRequest);
         }
     }
+
+    /**
+     * @param $queryBuilder
+     */
+    protected function setSelectColumns($queryBuilder) {
+        if (!$columns = $this->queryRequest->getSelectColumns()) {
+            return;
+        }
+
+        $queryBuilder->select($columns);
+    }
 }

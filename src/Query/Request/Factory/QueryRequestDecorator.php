@@ -87,6 +87,44 @@ class QueryRequestDecorator
         $this->setDateRange($queryRequest);
 
         $this->setDateRanges($queryRequest);
+
+        $this->setSelectColumns($queryRequest);
+    }
+
+    /**
+     * @param QueryRequestInterface|QueryRequest $queryRequest
+     * @throws ValidationException
+     */
+    protected function setSelectColumns(QueryRequestInterface $queryRequest)
+    {
+        $apiColumnCodesIdx = $queryRequest->getApiColumnCodeTagsIdx();
+
+        if (!$apiColumnCodesIdx) {
+            throw new \InvalidArgumentException("Please set the API column codes index before proceeding to decorate the query request.");
+        }
+
+        $apiColumnCodes = array_get($this->input, 'select_columns', null);
+
+        $selectColumns = [];
+
+        if ($apiColumnCodes) {
+            if (!is_array($apiColumnCodes)) {
+                throw new ValidationException("The `select_columns` property must be an array of strings.");
+            }
+
+            foreach ($apiColumnCodes as $apiColumnCode) {
+                /** @var ApiColumnCodeTag $apiColumnCodeDef */
+                $apiColumnCodeTag = array_get($apiColumnCodesIdx, $apiColumnCode);
+
+                if (!$apiColumnCodeTag) {
+                    throw new ValidationException("Validation error in the `select_columns` property. Api column code `{$apiColumnCode}` cannot be found.");
+                }
+
+                $selectColumns[] = $apiColumnCodeTag->getDatabaseColumn();
+            }
+        }
+
+        $queryRequest->setSelectColumns($selectColumns);
     }
 
     /**

@@ -47,7 +47,7 @@ abstract class Query
 
     /**
      * Query constructor.
-     * @param $queryRequest
+     * @param QueryRequestInterface $queryRequest
      */
     public function __construct($queryRequest)
     {

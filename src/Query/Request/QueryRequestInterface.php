@@ -78,4 +78,14 @@ interface QueryRequestInterface
      */
     public function isDateRangeAvailable();
 
+    /**
+     * @return array
+     */
+    public function getSelectColumns(): array;
+
+    /**
+     * @param array $selectColumns
+     */
+    public function setSelectColumns(array $selectColumns): void;
+
 }

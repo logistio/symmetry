@@ -24,6 +24,11 @@ class QueryRequest implements QueryRequestInterface
     protected $pageLength;
 
     /**
+     * @var array
+     */
+    protected $selectColumns = [];
+
+    /**
      * @var ColumnOrder[]
      */
     protected $columnOrdering = [];
@@ -282,5 +287,21 @@ class QueryRequest implements QueryRequestInterface
     public function setAggregationPeriodScope($aggregationPeriodScope)
     {
         $this->aggregationPeriodScope = $aggregationPeriodScope;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSelectColumns(): array
+    {
+        return $this->selectColumns;
+    }
+
+    /**
+     * @param array $selectColumns
+     */
+    public function setSelectColumns(array $selectColumns): void
+    {
+        $this->selectColumns = $selectColumns;
     }
 }
