@@ -28,6 +28,11 @@ class ApiColumnCodeTag
     private $timeAggregateScope;
 
     /**
+     * @var
+     */
+    private $selectAlias;
+
+    /**
      * @param $config
      * @return Collection
      */
@@ -48,6 +53,12 @@ class ApiColumnCodeTag
             $timeAggregateScope = array_get($apiColumnCodeConfig, 'time_aggregate_scope', null);
 
             $tag->setTimeAggregateScope($timeAggregateScope);
+
+            $alias = array_get($apiColumnCodeConfig, 'select_alias', null);
+
+            if ($alias) {
+                $tag->setSelectAlias($alias);
+            }
 
             $collection->push($tag);
         }
@@ -117,6 +128,22 @@ class ApiColumnCodeTag
     public function setType($type)
     {
         $this->type = $type;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSelectAlias()
+    {
+        return $this->selectAlias;
+    }
+
+    /**
+     * @param mixed $selectAlias
+     */
+    public function setSelectAlias($selectAlias): void
+    {
+        $this->selectAlias = $selectAlias;
     }
 
     /**

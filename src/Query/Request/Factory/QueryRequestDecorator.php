@@ -120,7 +120,13 @@ class QueryRequestDecorator
                     throw new ValidationException("Validation error in the `select_columns` property. Api column code `{$apiColumnCode}` cannot be found.");
                 }
 
-                $selectColumns[] = $apiColumnCodeTag->getDatabaseColumn();
+                $selectAlias = $apiColumnCodeTag->getSelectAlias();
+
+                if ($selectAlias) {
+                    $selectColumns[] = "{$apiColumnCodeTag->getDatabaseColumn()} AS {$selectAlias}";
+                } else {
+                    $selectColumns[] = $apiColumnCodeTag->getDatabaseColumn();
+                }
             }
         }
 
