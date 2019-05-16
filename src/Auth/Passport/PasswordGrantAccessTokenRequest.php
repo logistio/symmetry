@@ -3,6 +3,8 @@
 
 namespace Logistio\Symmetry\Auth\Passport;
 
+use Logistio\Symmetry\Util\String\SecureString;
+
 /**
  * Class PasswordGrantAccessTokenRequest
  * @package Fastway\Platform\Auth\Passport
@@ -15,7 +17,7 @@ class PasswordGrantAccessTokenRequest extends AccessTokenRequest
     protected $username;
 
     /**
-     * @var string
+     * @var string|SecureString
      */
     protected $password;
 
@@ -50,13 +52,17 @@ class PasswordGrantAccessTokenRequest extends AccessTokenRequest
      */
     public function getPassword(): string
     {
+        if ($this->password instanceof SecureString) {
+            return $this->password->getString();
+        }
+
         return $this->password;
     }
 
     /**
-     * @param string $password
+     * @param string|SecureString $password
      */
-    public function setPassword(string $password)
+    public function setPassword($password)
     {
         $this->password = $password;
     }
