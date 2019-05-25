@@ -35,6 +35,16 @@ class DateRange implements Arrayable
     }
 
     /**
+     * @param Carbon $dateFrom
+     * @param Carbon $dateTo
+     * @return DateRange
+     */
+    public static function make(Carbon $dateFrom, Carbon $dateTo)
+    {
+        return new DateRange($dateFrom, $dateTo);
+    }
+
+    /**
      * @return Carbon
      */
     public function getDateFrom(): Carbon
@@ -248,6 +258,20 @@ class DateRange implements Arrayable
                 $carbonToIncrement->addDay();
                 break;
             }
+        }
+    }
+
+    /**
+     * @return \Generator
+     */
+    function eachDay() {
+        $cursor = $this->getDateFrom()->copy();
+
+        while ($cursor->lte($this->getDateTo())) {
+
+            yield $cursor;
+
+            $cursor->addDay();
         }
     }
 }

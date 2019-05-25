@@ -216,4 +216,22 @@ class DateRangeTest extends TestCase
 
         $this->assertEquals(4, count($dates));
     }
+
+    /**
+     * @test
+     */
+    public function test_forEachDay_generator()
+    {
+        $dayCount = 0;
+        $dateFrom = TimeUtil::paramDateToCarbon('2018-05-01');
+        $dateTo = TimeUtil::paramDateToCarbon('2018-05-07');
+
+        $dateRange = DateRange::make($dateFrom, $dateTo);
+
+        foreach ($dateRange->eachDay() as $date) {
+            $dayCount++;
+        }
+
+        $this->assertEquals(7, $dayCount);
+    }
 }
