@@ -3,6 +3,7 @@
 namespace Logistio\Symmetry\Process\Payload;
 
 use Illuminate\Contracts\Support\Arrayable;
+use Logistio\Symmetry\Process\Process;
 
 abstract class ProcessPayload implements Arrayable
 {
@@ -23,6 +24,11 @@ abstract class ProcessPayload implements Arrayable
     public $clientState = null;
 
     /**
+     * @var Process
+     */
+    protected $process;
+
+    /**
      * @return bool
      */
     public function isRunningInIncubatorMode()
@@ -34,6 +40,36 @@ abstract class ProcessPayload implements Arrayable
      * @return string
      */
     public abstract function getType();
+
+    /**
+     * @return Process
+     */
+    public function getProcess()
+    {
+        return $this->process;
+    }
+
+    /**
+     * @param Process $process
+     */
+    public function setProcess(Process $process)
+    {
+        $this->process = $process;
+    }
+
+    /**
+     *
+     */
+    public function save()
+    {
+        if (!$this->process) {
+            throw new \InvalidArgumentException("Process instance not set.");
+        }
+
+        $this->process->payload = json_encode($this->toArray());
+
+        $this->process->save();
+    }
 
     /**
      * @return array
