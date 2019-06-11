@@ -94,6 +94,46 @@ class ProcessState extends BaseModel
     }
 
     /**
+     * @return ProcessState|null
+     */
+    public static function getInProgressState()
+    {
+        return static::findByCode(static::CODE_IN_PROGRESS);
+    }
+
+    /**
+     * @return ProcessState|null
+     */
+    public static function getPendingState()
+    {
+        return static::findByCode(static::CODE_PENDING);
+    }
+
+    /**
+     * @return ProcessState|null
+     */
+    public static function getCompletedState()
+    {
+        return static::findByCode(static::CODE_COMPLETED);
+    }
+
+    /**
+     * @return ProcessState|null
+     */
+    public static function getFailedState()
+    {
+        return static::findByCode(static::CODE_FAILED);
+    }
+
+    /**
+     * @return ProcessState|null
+     */
+    public static function getPausedState()
+    {
+        return static::findByCode(static::CODE_PAUSED);
+    }
+
+    /**
      * Get the states that signify that the process
      * is being executed or pending execution.
      *
