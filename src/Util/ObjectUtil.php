@@ -36,6 +36,9 @@ class ObjectUtil
         if (is_null($target)) {
             return 'null';
 
+        } else if (is_string($target)) {
+            return $target;
+
         } else if (is_scalar($target) || method_exists($target, '__toString')) {
             return strval($target);
 

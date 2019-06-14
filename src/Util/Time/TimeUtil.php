@@ -50,13 +50,16 @@ class TimeUtil
         }
     }
 
+    /**
+     * @return string
+     */
     public static function nowAsTimestamp()
     {
         return self::dateTimeToApiTimestamp(self::now());
     }
 
     /**
-     * @param Carbon $dateTime
+     * @param Carbon|\DateTime $dateTime
      *
      * @return string
      *      UTC timestamp formatted for transmitting via the API.
@@ -64,7 +67,7 @@ class TimeUtil
      */
     public static function dateTimeToApiTimestamp($dateTime)
     {
-        return $dateTime->toDateTimeString();
+        return $dateTime->format('Y-m-d H:i:s');
     }
 
     /**
@@ -111,7 +114,7 @@ class TimeUtil
 
     /**
      * @param $dbIntegerDate
-     * @return false|static
+     * @return Carbon
      */
     public static function dbIntegerDateToCarbonDate($dbIntegerDate)
     {
@@ -251,7 +254,7 @@ class TimeUtil
      */
     public static function fromCarbonToIntegerDate(Carbon $dt)
     {
-           return $dt->format('Ymd');
+        return $dt->format('Ymd');
     }
 
     /**

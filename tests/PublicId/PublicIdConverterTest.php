@@ -76,12 +76,14 @@ class PublicIdConverterTest extends TestCase
 
             $message = "Failed for id=$id;";
 
-            $converterEncodedId = $this->pubIdConverter->encode($id);
+            // Expected:
             $managerEncodedId = PublicIdManager::encode($id);
+
+            // Actual:
+            $converterEncodedId = $this->pubIdConverter->encode($id);
 
             self::assertEquals($managerEncodedId, $converterEncodedId, $message);
         }
-
 
     }
 

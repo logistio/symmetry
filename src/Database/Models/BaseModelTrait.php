@@ -2,6 +2,15 @@
 
 namespace Logistio\Symmetry\Database\Models;
 
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * Trait BaseModelTrait
+ *
+ * ----
+ * @package Logistio\Symmetry\Database\Models
+ * @mixin Model
+ */
 trait BaseModelTrait
 {
     protected static function boot()
@@ -11,7 +20,7 @@ trait BaseModelTrait
         /**
          * Register a global created event hook.
          */
-        static::created(function($model) {
+        static::created(function ($model) {
 
             if ($model->hasPubIdColumn()) {
                 $model->{\PublicId::getDatabaseColumn()} = \PublicId::encode($model->id);
@@ -54,8 +63,18 @@ trait BaseModelTrait
      */
     public static function findOrFailByPubId($publicId)
     {
-        $dbId = \PublicId::decodeSoft($publicId);
+        $dbId = \PublicId::decode($publicId);
         return self::findOrFail($dbId);
+    }
+
+    /**
+     * @param $pubId
+     * @return self|static|null
+     */
+    public static function findByPubId($pubId)
+    {
+        $dbId = \PublicId::decode($pubId);
+        return self::find($dbId);
     }
 
     /**
@@ -140,7 +159,7 @@ trait BaseModelTrait
             $outputKey = $option['output_key'];
 
             /** @var \Closure $transformFunction */
-            $transformFunction  = $option['callback'];
+            $transformFunction = $option['callback'];
 
             $modelArray = call_user_func($transformFunction, $modelArray, $columnKey, $outputKey);
         }
@@ -155,11 +174,11 @@ trait BaseModelTrait
      */
     public static function makePubIdTransformationCallback()
     {
-        return function(array $modelArray, $columnKey, $outputKey) {
+        return function (array $modelArray, $columnKey, $outputKey) {
             $modelValue = array_get($modelArray, $columnKey);
 
             if (is_null($modelValue)) {
-                 return $modelArray;
+                return $modelArray;
             }
 
             $modelArray[$outputKey] = \PublicId::encode($modelValue);

@@ -2,6 +2,23 @@ VERSION HISTORY
 -----
 
 
+2019-06-14 FRI:
+[PTS]
+- v1.0.0:
+    - Changed `\Logistio\Symmetry\Util\Time\TimeUtil::dateTimeToApiTimestamp` to support DateTime.
+        - Previously this only supported Carbon. 
+    - Added `findByPubId` method to BaseModelTrait.
+    - Changed `\Logistio\Symmetry\Database\Models\BaseModelTrait::findOrFailByPubId`:
+        - BREAKING CHANGE 
+        - The input must now be a pubid or a ModelNotFoundException is throw.
+        - Previously, this function allowed the "pubid" parameter to be either a pubid
+            _or_ a primary key id. Not only did this result in unexpected behaviour, 
+            but it introduces a very likely source for a (albeit minor security hole: in many cases
+            it would allow the user to pass sequential database ids to the API and it wouldn't 
+            throw any errors.
+            
+           
+
 2019-02-12 TUE:
 [PTS]
 - v0.13.4:

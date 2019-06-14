@@ -3,6 +3,7 @@
 namespace Logistio\Symmetry\Test\Util\Time;
 
 use Carbon\Carbon;
+use DateTime;
 use Logistio\Symmetry\Test\TestCase;
 use Logistio\Symmetry\Util\Time\DateRange;
 use Logistio\Symmetry\Util\Time\TimeUtil;
@@ -105,7 +106,23 @@ class TimeUtilTest extends TestCase
         $date = TimeUtil::fromCarbonToDate($carbonDate);
 
         self::assertEquals($expectedDate, $date);
+    }
 
+    /**
+     * Asserts that we can pass a DateTime and a Carbon to "TimeUtil::dateTimeToApiTimestamp".
+     * @test
+     */
+    public function testDateTimeToApiTimestamp()
+    {
+        $expectedTimestamp = '2019-03-01 10:08:19';
+        $instant = DateTime::createFromFormat('Y-m-d H:i:s', $expectedTimestamp);
+        $convertedTimestamp = TimeUtil::dateTimeToApiTimestamp($instant);
+        self::assertEquals($expectedTimestamp, $convertedTimestamp);
+
+        $expectedTimestamp = '2019-06-06 13:12:11';
+        $instant = Carbon::createFromFormat('Y-m-d H:i:s', $expectedTimestamp);
+        $convertedTimestamp = TimeUtil::dateTimeToApiTimestamp($instant);
+        self::assertEquals($expectedTimestamp, $convertedTimestamp);
     }
 
 
