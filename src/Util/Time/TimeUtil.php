@@ -77,7 +77,11 @@ class TimeUtil
      */
     public static function today()
     {
-        return Carbon::today();
+        if (is_null(self::$overriddenNow)) {
+            return Carbon::today();
+        } else {
+            return self::$overriddenNow->copy()->setTime(0, 0, 0);
+        }
     }
 
     /**
