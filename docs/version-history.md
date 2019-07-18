@@ -2,6 +2,13 @@ VERSION HISTORY
 -----
 
 
+2019-07-18 THU:
+[PTS]
+- v1.1.0
+    - Added trait "Consumable"
+        - \Logistio\Symmetry\Util\Object\Consumable
+        
+
 2019-06-14 FRI:
 [PTS]
 - v1.0.0:
