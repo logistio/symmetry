@@ -40,7 +40,8 @@ class PublicIdConverterTest extends TestCase
     {
         parent::setUp();
 
-        $this->pubIdConverter = $this->app->make(PublicIdConverter::class);
+        PublicIdManager::reset();
+        $this->pubIdConverter = $this->app->make('PublicId');
     }
 
     /**
