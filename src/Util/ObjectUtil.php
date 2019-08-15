@@ -3,6 +3,8 @@
 namespace Logistio\Symmetry\Util;
 
 
+use Illuminate\Support\Facades\Log;
+
 /**
  * ObjectUtil
  * ----
@@ -98,6 +100,36 @@ class ObjectUtil
     public static function convertToBoolean($stringValue)
     {
         return filter_var($stringValue, FILTER_VALIDATE_BOOLEAN);
+    }
+
+    /**
+     * @param $seedConfig
+     * @param $paramName
+     * @param callable|mixed|null $defaultValue
+     *      The default value to use, or a callback to be invoked
+     *      to create the default value.
+     * @return mixed
+     */
+    public static function extractParam($seedConfig, $paramName, $defaultValue = null)
+    {
+        if (is_array($seedConfig) && isset($seedConfig[$paramName])) {
+            return $seedConfig[$paramName];
+
+        } else if (is_object($seedConfig) && isset($seedConfig->$paramName)) {
+            return $seedConfig->$paramName;
+
+        } else if (is_null($defaultValue)) {
+            return null;
+
+        } else if (is_string($defaultValue)) {
+            return $defaultValue;
+
+        } else if (is_callable($defaultValue)) {
+            return $defaultValue->__invoke();
+
+        } else {
+            return $defaultValue;
+        }
     }
 
 }

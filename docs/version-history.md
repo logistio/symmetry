@@ -1,6 +1,10 @@
 VERSION HISTORY
 -----
 
+2019-08-15 THU:
+[PTS]
+- V1.2.0
+    - Changed `\Logistio\Symmetry\Mock\Seed\BaseMockSeeder::extractParam` to accept object or array.
 
 2019-07-18 THU:
 [PTS]
