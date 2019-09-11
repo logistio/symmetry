@@ -363,10 +363,16 @@ class TimeUtil
             return;
         }
 
-        $date->addDay();
-
         // Preserve the original time
         $originalTime = $date->toTimeString();
+
+        if ($isStartOfMonth) {
+            $date->endOfMonth();
+            $date->setTimeFromTimeString($originalTime);
+            return;
+        }
+
+        $date->addDay();
 
         $date->endOfMonth();
 

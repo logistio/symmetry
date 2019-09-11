@@ -114,6 +114,10 @@ class DateRange implements Arrayable
             $dates[] = $cursor->copy();
 
             $this->incrementBy($cursor, $period);
+
+            if ($period == static::$PERIOD_MONTHS && TimeUtil::isEndOfMonth($cursor)) {
+                $cursor->addDay();
+            }
         }
 
         return $dates;
