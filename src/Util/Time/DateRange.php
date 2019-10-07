@@ -180,9 +180,19 @@ class DateRange implements Arrayable
     {
         $tupleSegments = [];
 
-        $curDateFrom = $this->dateFrom->copy();
+        // If we are segmenting weeks, start from the start of the week
+        // of the `dateFrom` and end at the last day of the week of
+        // the `dateTo`.
+        if ($period == static::$PERIOD_WEEKS) {
+            $curDateFrom = $this->dateFrom->copy()->startOfWeek();
+            $endDate = $this->dateTo->copy()->endOfWeek();
+        }
+        else {
+            $curDateFrom = $this->dateFrom->copy();
+            $endDate = $this->dateTo;
+        }
 
-        while ($curDateFrom->lte($this->dateTo)) {
+        while ($curDateFrom->lte($endDate)) {
 
             if ($period == static::$PERIOD_DAYS) {
                 $tupleSegments[] = [
