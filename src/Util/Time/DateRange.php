@@ -231,6 +231,9 @@ class DateRange implements Arrayable
 
                 $nextDateFrom = $curDateTo->copy()->addDay();
             }
+            else if ($period == static::$PERIOD_WEEKS) {
+                $nextDateFrom = $curDateTo->copy()->addDay();
+            }
             else {
                 $nextDateFrom = $curDateTo;
             }
@@ -255,7 +258,7 @@ class DateRange implements Arrayable
                 break;
             }
             case static::$PERIOD_WEEKS: {
-                $carbonToIncrement->addDay(7);
+                $carbonToIncrement->addDay(6);
                 break;
             }
             case static::$PERIOD_DAYS: {
