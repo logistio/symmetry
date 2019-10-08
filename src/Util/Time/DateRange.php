@@ -27,11 +27,16 @@ class DateRange implements Arrayable
      * DateRange constructor.
      * @param Carbon $dateFrom
      * @param Carbon $dateTo
+     * @param bool $resetTime
      */
-    public function __construct(Carbon $dateFrom, Carbon $dateTo)
+    public function __construct(Carbon $dateFrom, Carbon $dateTo, $resetTime = true)
     {
         $this->dateFrom = $dateFrom;
         $this->dateTo = $dateTo;
+        if ($resetTime) {
+            $this->dateFrom->startOfDay();
+            $this->dateTo->endOfDay();
+        }
     }
 
     /**
@@ -220,7 +225,7 @@ class DateRange implements Arrayable
 
             $tupleSegments[] = $segmentFromTo;
 
-            if ($period == static::$PERIOD_MONTHS) {
+            if ($period == static::$PERIOD_MONTHS || $period == static::$PERIOD_WEEKS || $period == static::$PERIOD_YEARS) {
                 /*
                  * [2019-02-06 PTS]
                  * According to the DateRangeTest, the expected behaviour
@@ -241,9 +246,6 @@ class DateRange implements Arrayable
 
                 $nextDateFrom = $curDateTo->copy()->addDay();
             }
-            else if ($period == static::$PERIOD_WEEKS) {
-                $nextDateFrom = $curDateTo->copy()->addDay();
-            }
             else {
                 $nextDateFrom = $curDateTo;
             }
@@ -258,7 +260,7 @@ class DateRange implements Arrayable
     {
         switch ($period) {
             case static::$PERIOD_YEARS: {
-                $carbonToIncrement->addYear();
+                $carbonToIncrement->addMonth(11)->endOfMonth();
                 break;
             }
             case static::$PERIOD_MONTHS: {
