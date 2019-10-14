@@ -215,7 +215,7 @@ class DateRange implements Arrayable
             $curDateTo = $curDateFrom->copy();
             $this->incrementBy($curDateTo, $period);
 
-            if ($curDateTo->gt($this->dateTo)) {
+            if ($curDateTo->gt($this->dateTo) && $period != static::$PERIOD_WEEKS) {
                 // This tuple would finish later than the speicified dateTo.
                 // We only include tuples in the output range that fill an entire period.
                 break;
