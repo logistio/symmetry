@@ -9,6 +9,7 @@ use Logistio\Symmetry\Util\ObjectUtil;
 class DateRange implements Arrayable
 {
     private static $PERIOD_YEARS = 'YEARS';
+    private static $PERIOD_QUARTER = 'QUARTER';
     private static $PERIOD_MONTHS = 'MONTHS';
     private static $PERIOD_WEEKS = 'WEEKS';
     private static $PERIOD_DAYS = 'DAYS';
@@ -161,6 +162,14 @@ class DateRange implements Arrayable
     }
 
     /**
+     * @return array
+     */
+    public function segmentToQuartersTupleCollection()
+    {
+        return $this->segmentToTupleCollectionForPeriod(static::$PERIOD_QUARTER);
+    }
+
+    /**
      * Given the start and end date this DateRange instance represents,
      * create a collection of tuples that are split by the $period
      * argument (eg. YEARS, MONTHS, WEEKS).
@@ -191,6 +200,23 @@ class DateRange implements Arrayable
         if ($period == static::$PERIOD_WEEKS) {
             $curDateFrom = $this->dateFrom->copy()->startOfWeek();
             $endDate = $this->dateTo->copy()->endOfWeek();
+        }
+        else if ($period == static::$PERIOD_QUARTER) {
+            $startOfQuarter = $this->dateFrom->copy()->startOfQuarter();
+
+            $curDateFrom = $this->dateFrom->copy();
+
+            if ($this->dateFrom->gt($startOfQuarter)) {
+                $curDateFrom = $this->dateFrom->copy()->endOfQuarter()->addDay();
+            }
+
+            $endOfQuarter = $this->dateTo->copy()->startOfQuarter();
+
+            $endDate = $this->dateTo->copy();
+
+            if ($this->dateTo->lt($endOfQuarter)) {
+                $endDate = $this->dateTo->copy()->startOfQuarter()->subDay();
+            }
         }
         else {
             $curDateFrom = $this->dateFrom->copy();
@@ -225,7 +251,7 @@ class DateRange implements Arrayable
 
             $tupleSegments[] = $segmentFromTo;
 
-            if ($period == static::$PERIOD_MONTHS || $period == static::$PERIOD_WEEKS || $period == static::$PERIOD_YEARS) {
+            if ($period == static::$PERIOD_MONTHS || $period == static::$PERIOD_WEEKS || $period == static::$PERIOD_QUARTER|| $period == static::$PERIOD_YEARS) {
                 /*
                  * [2019-02-06 PTS]
                  * According to the DateRangeTest, the expected behaviour
@@ -262,6 +288,11 @@ class DateRange implements Arrayable
             case static::$PERIOD_YEARS: {
                 $carbonToIncrement->addMonth(11)->endOfMonth();
                 break;
+            }
+            case static::$PERIOD_QUARTER: {
+                // Use the TimeUtil function to resolve
+                TimeUtil::addMonth($carbonToIncrement);
+                TimeUtil::addMonth($carbonToIncrement);
             }
             case static::$PERIOD_MONTHS: {
                 // Use the TimeUtil function to resolve
