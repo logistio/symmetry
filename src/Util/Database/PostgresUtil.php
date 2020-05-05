@@ -1,6 +1,6 @@
 <?php
 
-namespace Logistio\Symmetry\Util\Time\Database;
+namespace Logistio\Symmetry\Util\Database;
 
 use Illuminate\Database\Connection;
 
