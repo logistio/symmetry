@@ -3,6 +3,7 @@
 namespace Logistio\Symmetry\Util\Database;
 
 use Illuminate\Database\Connection;
+use Illuminate\Database\PostgresConnection;
 
 /**
  * Class PostgresUtil
@@ -11,14 +12,11 @@ use Illuminate\Database\Connection;
 class PostgresUtil
 {
     /**
-     * @param Connection $connection
+     * @param Connection|PostgresConnection $connection
      * @return array
      */
     public static function getAllTableNames(Connection $connection)
     {
-        return $connection->select("
-            SELECT table_name
-            FROM information_schema.tables
-        ");
+        return $connection->getDoctrineConnection()->getSchemaManager()->listTableNames();
     }
 }
