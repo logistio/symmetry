@@ -36,7 +36,7 @@ class PublicIdConverterTest extends TestCase
         // 1911191119212167645678,  // This is too big for HashIds!
     ];
 
-    protected function setUp()
+    protected function setUp():void
     {
         parent::setUp();
 
