@@ -75,12 +75,12 @@ class DateRangeTest extends TestCase
         $nth = $segments[0];
 
         $this->assertEquals('2016-01-01', $nth[0]->toDateString());
-        $this->assertEquals('2017-01-01', $nth[1]->toDateString());
+        $this->assertEquals('2016-12-31', $nth[1]->toDateString());
 
         $nth = $segments[1];
 
         $this->assertEquals('2017-01-01', $nth[0]->toDateString());
-        $this->assertEquals('2018-01-01', $nth[1]->toDateString());
+        $this->assertEquals('2017-12-31', $nth[1]->toDateString());
 
 //        foreach ($segments as $segment) {
 //
@@ -103,17 +103,17 @@ class DateRangeTest extends TestCase
 
         $segments = collect($dateRange->segmentToWeeksTupleCollection());
 
-        self::assertEquals(2, $segments->count(), "Expected the range to be broken up into two 1-week segments");
+        self::assertEquals(3, $segments->count(), "Expected the range to be broken up into two 1-week segments");
 
         $nth = $segments[0];
 
         $this->assertEquals('2018-01-01', $nth[0]->toDateString());
-        $this->assertEquals('2018-01-08', $nth[1]->toDateString());
+        $this->assertEquals('2018-01-07', $nth[1]->toDateString());
 
         $nth = $segments[1];
 
         $this->assertEquals('2018-01-08', $nth[0]->toDateString());
-        $this->assertEquals('2018-01-15', $nth[1]->toDateString());
+        $this->assertEquals('2018-01-14', $nth[1]->toDateString());
 
     }
 
@@ -170,7 +170,7 @@ class DateRangeTest extends TestCase
 
         $weekDates = $dateRange->getWeekDatesBetween();
 
-        $this->assertEquals(14, count($weekDates));
+        $this->assertEquals(16, count($weekDates));
 
         $dateRange = new DateRange(
             TimeUtil::now()->subDay(6),
@@ -179,7 +179,7 @@ class DateRangeTest extends TestCase
 
         $weekDates = $dateRange->getWeekDatesBetween();
 
-        $this->assertEquals(1, count($weekDates));
+        $this->assertEquals(2, count($weekDates));
 
         // DAYS
 
@@ -214,7 +214,7 @@ class DateRangeTest extends TestCase
 
         $dates = $dateRange->getMonthDatesBetween();
 
-        $this->assertEquals(4, count($dates));
+        $this->assertEquals(3, count($dates));
     }
 
     /**
