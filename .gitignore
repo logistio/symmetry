@@ -14,3 +14,4 @@ yarn-error.log
 /storage/secrets
 .DS_Store
 .env
+.phpunit.result.cache

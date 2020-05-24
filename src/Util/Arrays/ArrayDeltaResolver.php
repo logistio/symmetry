@@ -2,6 +2,8 @@
 
 namespace Logistio\Symmetry\Util\Arrays;
 
+use Illuminate\Support\Arr;
+
 /**
  * Class ArrayDeltaResolver
  * @package Logistio\Symmetry\Util\Arrays
@@ -33,7 +35,7 @@ class ArrayDeltaResolver
 
         foreach ($arrayToCompare as $key => $value) {
 
-            $correspondingValue = array_get($arrayToCompareAgainst, $key, null);
+            $correspondingValue = Arr::get($arrayToCompareAgainst, $key, null);
 
             if (is_null($correspondingValue)) {
                 $deltaArray[$key] = $value;
