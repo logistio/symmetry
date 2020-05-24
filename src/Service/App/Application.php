@@ -3,6 +3,7 @@
 
 namespace Logistio\Symmetry\Service\App;
 
+use Illuminate\Support\Arr;
 
 class Application
 {
@@ -90,7 +91,7 @@ class Application
 
         $json = json_decode(file_get_contents($path), true);
 
-        return array_get($json, 'version', null);
+        return Arr::get($json, 'version', null);
     }
 
     public function assertEnvironmentIsValid()

@@ -3,6 +3,7 @@
 
 namespace Logistio\Symmetry\Query\Macro\Validator;
 
+use Illuminate\Support\Arr;
 use Logistio\Symmetry\Exception\ValidationException;
 use Logistio\Symmetry\Query\Predicate\PredicateModel;
 
@@ -21,9 +22,9 @@ class QueryRequestFilterValidator
      */
     public function validate(array $filter, $index)
     {
-        $apiColumnCode = array_get($filter, 'api_column_code');
+        $apiColumnCode = Arr::get($filter, 'api_column_code');
 
-        $type = array_get($filter, 'type');
+        $type = Arr::get($filter, 'type');
 
         if (!$apiColumnCode) {
             throw new ValidationException("The `api_column_code` property is missing from an element in the `filters` property. Index: {$index}.");

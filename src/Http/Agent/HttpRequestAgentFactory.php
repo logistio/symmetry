@@ -2,6 +2,7 @@
 
 namespace Logistio\Symmetry\Http\Agent;
 
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Jenssegers\Agent\Agent;
 
@@ -41,8 +42,8 @@ class HttpRequestAgentFactory
         if ($deviceScreen) {
             $screenDimensions = explode(";", $deviceScreen);
 
-            $httpRequestAgent->setScreenWidth(array_get($screenDimensions, 0));
-            $httpRequestAgent->setScreenHeight(array_get($screenDimensions, 1));
+            $httpRequestAgent->setScreenWidth(Arr::get($screenDimensions, 0));
+            $httpRequestAgent->setScreenHeight(Arr::get($screenDimensions, 1));
         }
 
         return $httpRequestAgent;

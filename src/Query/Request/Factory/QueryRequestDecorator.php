@@ -2,6 +2,7 @@
 
 namespace Logistio\Symmetry\Query\Request\Factory;
 
+use Illuminate\Support\Arr;
 use Logistio\Symmetry\Exception\ValidationException;
 use Logistio\Symmetry\Process\Query\Aggregate\Time\BaseTimeScopeAggregator;
 use Logistio\Symmetry\Query\Filter\Filter;
@@ -103,7 +104,7 @@ class QueryRequestDecorator
             throw new \InvalidArgumentException("Please set the API column codes index before proceeding to decorate the query request.");
         }
 
-        $apiColumnCodes = array_get($this->input, 'select_columns', null);
+        $apiColumnCodes = Arr::get($this->input, 'select_columns', null);
 
         $selectColumns = [];
 
@@ -114,7 +115,7 @@ class QueryRequestDecorator
 
             foreach ($apiColumnCodes as $apiColumnCode) {
                 /** @var ApiColumnCodeTag $apiColumnCodeDef */
-                $apiColumnCodeTag = array_get($apiColumnCodesIdx, $apiColumnCode);
+                $apiColumnCodeTag = Arr::get($apiColumnCodesIdx, $apiColumnCode);
 
                 if (!$apiColumnCodeTag) {
                     throw new ValidationException("Validation error in the `select_columns` property. Api column code `{$apiColumnCode}` cannot be found.");
@@ -138,7 +139,7 @@ class QueryRequestDecorator
      */
     protected function setApiColumnCodeTags(QueryRequestInterface $queryRequest)
     {
-        $apiColumnCodeTags = array_get($this->input, 'api_column_code_tags', []);
+        $apiColumnCodeTags = Arr::get($this->input, 'api_column_code_tags', []);
 
         $queryRequest->setApiColumnCodeTags(
             ApiColumnCodeTag::makeFromArray($apiColumnCodeTags)
@@ -183,7 +184,7 @@ class QueryRequestDecorator
      */
     private function makeColumnOrderObject($column, QueryRequestInterface $queryRequest, $index)
     {
-        $direction = array_get($column, 'direction');
+        $direction = Arr::get($column, 'direction');
 
         if (!$direction) {
             throw new ValidationException("The `direction` property is missing from an element in the `column_ordering` property. Index: {$index}.");
@@ -193,14 +194,14 @@ class QueryRequestDecorator
             throw new ValidationException("The `direction` property is invalid. Index: {$index}.");
         }
 
-        $apiColumnCode = array_get($column, 'api_column_code');
+        $apiColumnCode = Arr::get($column, 'api_column_code');
 
         if (!$apiColumnCode) {
             throw new ValidationException("The `api_column_code` property is missing from an element in the `column_ordering` property. Index: {$index}.");
         }
 
         /** @var ApiColumnCodeTag $apiColumnCodeTag */
-        $apiColumnCodeTag = array_get($queryRequest->getApiColumnCodeTagsIdx(), $apiColumnCode);
+        $apiColumnCodeTag = Arr::get($queryRequest->getApiColumnCodeTagsIdx(), $apiColumnCode);
 
         if (!$apiColumnCodeTag) {
             throw new ValidationException("The `api_column_code` property in the `column_ordering` array is invalid. Index: {$index}.");
@@ -359,8 +360,8 @@ class QueryRequestDecorator
     {
         $input = $this->input;
 
-        $dateFromInput = array_get($input, 'date_from', null);
-        $dateToInput = array_get($input, 'date_to', null);
+        $dateFromInput = Arr::get($input, 'date_from', null);
+        $dateToInput = Arr::get($input, 'date_to', null);
 
         if (is_null($dateFromInput) || is_null($dateToInput)) {
             return;
@@ -393,7 +394,7 @@ class QueryRequestDecorator
      */
     protected function setDateRanges(QueryRequestInterface $queryRequest)
     {
-        $dateRangesInput = array_get($this->input, 'date_ranges', null);
+        $dateRangesInput = Arr::get($this->input, 'date_ranges', null);
 
         if (!$dateRangesInput) {
             if ($queryRequest->getAggregationPeriodScope() == BaseTimeScopeAggregator::SCOPE_MULTI_PERIOD) {
@@ -415,8 +416,8 @@ class QueryRequestDecorator
                 throw new ValidationException("Invalid date range at index {$index}. The element must be a date range object.");
             }
 
-            $dateFromInput = array_get($dateRangeInput, 'date_from');
-            $dateToInput = array_get($dateRangeInput, 'date_to');
+            $dateFromInput = Arr::get($dateRangeInput, 'date_from');
+            $dateToInput = Arr::get($dateRangeInput, 'date_to');
 
             if (!$dateFromInput) {
                 throw new ValidationException("Invalid date range at index {$index}. The `date_from` property is not set.");
@@ -449,7 +450,7 @@ class QueryRequestDecorator
      */
     protected function setAggregationPeriodScope(QueryRequestInterface $queryRequest)
     {
-        $scope = array_get($this->input, 'aggregation_period_scope', null);
+        $scope = Arr::get($this->input, 'aggregation_period_scope', null);
 
         if (is_null($scope)) {
             // Set a sensible default.
@@ -487,13 +488,13 @@ class QueryRequestDecorator
     {
         $apiColumnCodeTagsIdx = $queryRequest->getApiColumnCodeTagsIdx();
 
-        $apiColumnCode = array_get($filter, 'api_column_code');
+        $apiColumnCode = Arr::get($filter, 'api_column_code');
 
-        $query = array_get($filter, 'query');
+        $query = Arr::get($filter, 'query');
 
-        $type = array_get($filter, 'type');
+        $type = Arr::get($filter, 'type');
 
-        $apiColumnCodeTag = array_get($apiColumnCodeTagsIdx, $apiColumnCode);
+        $apiColumnCodeTag = Arr::get($apiColumnCodeTagsIdx, $apiColumnCode);
 
         if (is_null($apiColumnCodeTag)) {
             throw new ValidationException("The `api_column_code` property in the `filters` property is invalid. Index: {$index}.");

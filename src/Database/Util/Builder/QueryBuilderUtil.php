@@ -2,6 +2,7 @@
 
 namespace Logistio\Symmetry\Database\Util\Builder;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Query\Builder;
 
 class QueryBuilderUtil
@@ -12,6 +13,6 @@ class QueryBuilderUtil
      */
     public static function toSql(Builder $builder)
     {
-        return str_replace_array('?', $builder->getBindings(), $builder->toSql());
+        return Str::replaceArray('?', $builder->getBindings(), $builder->toSql());
     }
 }

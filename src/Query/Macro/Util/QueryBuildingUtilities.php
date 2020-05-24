@@ -2,6 +2,7 @@
 
 namespace Logistio\Symmetry\Query\Macro\Util;
 
+use Illuminate\Support\Arr;
 use Logistio\Symmetry\Exception\ValidationException;
 use Logistio\Symmetry\Query\Filter\Filter;
 use Logistio\Symmetry\Query\Macro\ColumnCode\ApiColumnCodeTag;
@@ -98,7 +99,7 @@ trait QueryBuildingUtilities
                 // $globalSearchableColumnsMap
 
                 /** @var ApiColumnCodeTag $apiCodeTag */
-                $apiCodeTag = array_get($apiColumnCodeTagsIdx, $searchableColumn);
+                $apiCodeTag = Arr::get($apiColumnCodeTagsIdx, $searchableColumn);
 
                 if (!$apiCodeTag) {
                     throw new ValidationException("The api column code `{$searchableColumn}` is invalid.");
@@ -140,7 +141,7 @@ trait QueryBuildingUtilities
         foreach ($this->queryRequest->getFilters() as $filter) {
 
             /** @var ApiColumnCodeTag $apiColumnTag */
-            $apiColumnTag = array_get($apiColumnCodeTagsIdx, $filter->getApiColumnCode());
+            $apiColumnTag = Arr::get($apiColumnCodeTagsIdx, $filter->getApiColumnCode());
 
             if (is_null($apiColumnTag)) {
                 throw new ValidationException("The api column code `{$apiColumnTag}` is invalid.");

@@ -3,6 +3,7 @@
 
 namespace Logistio\Symmetry\Validator\Env;
 
+use Illuminate\Support\Arr;
 use Illuminate\Support\ServiceProvider;
 
 class DotEnvValidatorServiceProvider extends ServiceProvider
@@ -35,13 +36,13 @@ class DotEnvValidatorServiceProvider extends ServiceProvider
              * Check if there is a configuration for the current environment.
              */
 
-            $envSpecificConfig = array_get($config, $env);
+            $envSpecificConfig = Arr::get($config, $env);
 
             $requiredValues = [];
 
             if (! is_null($envSpecificConfig) ) {
 
-                $requiredValues = array_get($envSpecificConfig, 'required_values', []);
+                $requiredValues = Arr::get($envSpecificConfig, 'required_values', []);
 
             }
 

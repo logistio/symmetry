@@ -2,6 +2,7 @@
 
 namespace Logistio\Symmetry\Database\Models;
 
+use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -84,7 +85,7 @@ trait BaseModelTrait
      */
     private function attachMissingPubid(array $modelArray)
     {
-        $pubid = array_get($modelArray, 'pubid', null);
+        $pubid = Arr::get($modelArray, 'pubid', null);
 
         if (is_null($pubid)) {
             $modelArray['pubid'] = \PublicId::encode($this->id);
@@ -109,19 +110,19 @@ trait BaseModelTrait
             return $array;
         }
 
-        $columnsTransform = array_get($options, 'columns_transform');
+        $columnsTransform = Arr::get($options, 'columns_transform');
 
         if (is_array($columnsTransform)) {
             $array = $this->processTransformColumnsOption($array, $columnsTransform);
         }
 
-        $excludeColumns = array_get($options, 'exclude_columns');
+        $excludeColumns = Arr::get($options, 'exclude_columns');
 
         if (is_array($excludeColumns)) {
             $array = $this->processExcludeColumnsOption($array, $excludeColumns);
         }
 
-        $excludeId = array_get($options, 'exclude_id');
+        $excludeId = Arr::get($options, 'exclude_id');
 
         if ($excludeId == true) {
             unset($array['id']);
@@ -140,7 +141,7 @@ trait BaseModelTrait
         foreach ($columnsToExclude as $columnToExclude) {
             $columnKey = $columnToExclude['key'];
 
-            $modelValue = array_get($modelArray, $columnKey);
+            $modelValue = Arr::get($modelArray, $columnKey);
 
             if (is_null($modelValue)) {
                 continue;
@@ -175,7 +176,7 @@ trait BaseModelTrait
     public static function makePubIdTransformationCallback()
     {
         return function (array $modelArray, $columnKey, $outputKey) {
-            $modelValue = array_get($modelArray, $columnKey);
+            $modelValue = Arr::get($modelArray, $columnKey);
 
             if (is_null($modelValue)) {
                 return $modelArray;

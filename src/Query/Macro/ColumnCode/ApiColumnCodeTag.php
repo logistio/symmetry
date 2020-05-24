@@ -2,6 +2,8 @@
 
 
 namespace Logistio\Symmetry\Query\Macro\ColumnCode;
+
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 /**
@@ -46,15 +48,15 @@ class ApiColumnCodeTag
             $tag->setCode($apiColumnCodeConfig['code']);
             $tag->setDatabaseColumn($apiColumnCodeConfig['database_column']);
 
-            $type = array_get($apiColumnCodeConfig, 'type', static::TYPE_STRING);
+            $type = Arr::get($apiColumnCodeConfig, 'type', static::TYPE_STRING);
 
             $tag->setType($type);
 
-            $timeAggregateScope = array_get($apiColumnCodeConfig, 'time_aggregate_scope', null);
+            $timeAggregateScope = Arr::get($apiColumnCodeConfig, 'time_aggregate_scope', null);
 
             $tag->setTimeAggregateScope($timeAggregateScope);
 
-            $alias = array_get($apiColumnCodeConfig, 'select_alias', null);
+            $alias = Arr::get($apiColumnCodeConfig, 'select_alias', null);
 
             if ($alias) {
                 $tag->setSelectAlias($alias);

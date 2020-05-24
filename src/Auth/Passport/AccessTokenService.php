@@ -3,7 +3,7 @@
 
 namespace Logistio\Symmetry\Auth\Passport;
 
-
+use Illuminate\Support\Arr;
 use Logistio\Symmetry\Exception\Auth\InvalidCredentialsException;
 use GuzzleHttp\Client as HttpClient;
 use GuzzleHttp\Exception\ClientException;
@@ -48,9 +48,9 @@ class AccessTokenService implements AccessTokenServiceInterface
 
             $body = json_decode((string)$e->getResponse()->getBody(), true);
 
-            $message = array_get($body, 'message');
+            $message = Arr::get($body, 'message');
 
-            $error = array_get($body, 'error');
+            $error = Arr::get($body, 'error');
 
             throw new BadRequestHttpException($message . " " . $error);
         }
@@ -80,7 +80,7 @@ class AccessTokenService implements AccessTokenServiceInterface
         $accessToken->setExpiresIn($response['expires_in']);
         $accessToken->setAccessToken($response['access_token']);
 
-        $refreshToken = array_get($response, 'refresh_token');
+        $refreshToken = Arr::get($response, 'refresh_token');
 
         if (!is_null($refreshToken)) {
             $accessToken->setRefreshToken($refreshToken);
