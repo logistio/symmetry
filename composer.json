@@ -6,7 +6,7 @@
         "php": ">=7.2.5",
         "hashids/hashids": "3.0.0",
         "laravel/framework": "^7.0.0",
-        "laravel/passport": "^7.0",
+        "laravel/passport": "^9.0",
         "jenssegers/agent": "^2.6"
     },
     "require-dev": {
