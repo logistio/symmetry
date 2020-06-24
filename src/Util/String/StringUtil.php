@@ -1,6 +1,6 @@
 <?php
 
-namespace Logistio\Symmetry\Util\String\String;
+namespace Logistio\Symmetry\Util\String;
 
 /**
  * Class StringUtil
