@@ -3,7 +3,7 @@
 namespace Logistio\Symmetry\Query\Request\Factory;
 
 use Logistio\Symmetry\Exception\ValidationException;
-use Logistio\Symmetry\Process\Query\Aggregate\Time\BaseTimeScopeAggregator;
+use Logistio\Symmetry\Query\Aggregate\Time\BaseTimeScopeAggregator;
 use Logistio\Symmetry\Query\Filter\Filter;
 use Logistio\Symmetry\Query\Macro\Cleaner\QueryTokenCleaner;
 use Logistio\Symmetry\Query\Macro\ColumnCode\ApiColumnCodeTag;

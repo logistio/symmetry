@@ -2,6 +2,7 @@
     "name": "logistio/symmetry",
     "type": "library",
     "license": "MIT",
+    "description": "Utility classes and functions",
     "require": {
         "php": "^7.1.3",
         "hashids/hashids": "3.0.0",
@@ -19,7 +20,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Logistio\\Symmetry\\": "src"
+            "Logistio\\Symmetry\\": "src/"
         }
     },
     "autoload-dev": {

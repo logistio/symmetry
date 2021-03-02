@@ -1,6 +1,6 @@
 <?php
 
-namespace Logistio\Symmetry\Process\Query\Aggregate\Time;
+namespace Logistio\Symmetry\Query\Aggregate\Time;
 
 use Logistio\Symmetry\Exception\ValidationException;
 

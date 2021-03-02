@@ -1,6 +1,6 @@
 <?php
 
-namespace Logistio\Symmetry\Util\Datatabe\Sql;
+namespace Logistio\Symmetry\Util\Database\Sql;
 
 /**
  * SQL Formatter is a collection of utilities for debugging SQL queries.
