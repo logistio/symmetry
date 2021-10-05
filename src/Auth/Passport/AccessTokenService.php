@@ -65,7 +65,9 @@ class AccessTokenService implements AccessTokenServiceInterface
      */
     protected function buildHttpClient()
     {
-        return new HttpClient();
+        return new HttpClient([
+            'verify' => false,
+        ]);
     }
 
     /**
